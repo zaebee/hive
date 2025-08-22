@@ -84,8 +84,8 @@ stateDiagram-v2
     Setup --> FirstAggregate: Create Your Queen
     FirstAggregate --> Patterns: Learn Sacred Codons
     Patterns --> Integration: Connect to Real World
-    Integration --> Scale: Grow Your Colony
-    Scale --> [*]: Living Hive System
+    Integration --> Evolution: Grow Your Colony
+    Evolution --> [*]: Living Hive System
 ```
 
 **Your Toolkit:**
@@ -193,7 +193,7 @@ class HiveDNA:
 graph TD
     A[Aggregate<br/>🫀 Carbon] --- B[Transformation<br/>⚗️ Hydrogen]
     A ===== C[Connector<br/>🌉 Oxygen]
-    A -.-.-.-> D[Genesis Event<br/>📢 Nitrogen]
+    A ----> D[Genesis Event<br/>📢 Nitrogen]
     
     style A fill:#ff9999
     style B fill:#99ff99  
