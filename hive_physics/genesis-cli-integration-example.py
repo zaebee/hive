@@ -2,14 +2,16 @@ import click
 import os
 import sys
 import json
+from pathlib import Path
 
 # Since the hive_physics package is now installed in editable mode,
 # we can import from it directly without modifying the path.
 from hive_physics.measurements.temperature import measure_hive_temperature
 from hive_physics.measurements.growth_rate import measure_growth_rate
-from hive_physics.predictors.coupling import predict_bond_strength
+from hive_physics.predictors.coupling import predict_bond_strength_for_pair as predict_bond_strength
 from hive_physics.validation.rules import check_valency_conservation
 from hive_physics.simulators.electromagnetism import find_most_stable_path
+from hive_physics.adaptation.aggregate import AdaptationAggregate, ApplyPatchCommand
 
 # This file is a simulation of how the `genesis` CLI tool could be extended.
 # Since the actual source code is in an external repository, this file
@@ -34,6 +36,52 @@ def hatch():
 def command(component_name: str):
     """A placeholder for the 'hatch command' subcommand."""
     click.echo(f"🥚 Mock: Hatching a new command component named '{component_name}'...")
+
+
+# --- New 'evolve' Command Group ---
+@cli.group()
+def evolve():
+    """Evolves the Hive using the Adaptation Engine."""
+    pass
+
+@evolve.command('patch')
+@click.option('--file', 'patch_file', required=True, type=click.Path(exists=True), help='Path to the patch file.')
+def patch(patch_file):
+    """Applies a patch to the Hive and measures its impact."""
+    click.echo(f"🧬 Evolving the Hive with patch: {patch_file}")
+
+    try:
+        patch_content = Path(patch_file).read_text()
+
+        aggregate = AdaptationAggregate("cli_aggregate")
+        command = ApplyPatchCommand(patch=patch_content)
+
+        events = aggregate._execute_immune_logic(command)
+
+        # Display the results from the event
+        result_event = events[0]
+        status = result_event.payload.get("status", "unknown")
+        pre_toxicity = result_event.payload.get("pre_toxicity", 0)
+        post_toxicity = result_event.payload.get("post_toxicity", 0)
+
+        click.echo("\n--- Evolution Result ---")
+        if status == "applied":
+            click.secho(f"✅ Patch successfully applied.", fg='green')
+        else:
+            click.secho(f"❌ Patch rejected.", fg='red')
+
+        click.echo(f"  - Pre-patch Toxicity: {pre_toxicity:.2f}")
+        click.echo(f"  - Post-patch Toxicity: {post_toxicity:.2f}")
+
+        if post_toxicity < pre_toxicity:
+            click.secho("  - Interpretation: This is a 'honey' patch, improving the Hive's health.", fg='cyan')
+        elif post_toxicity > pre_toxicity:
+            click.secho("  - Interpretation: This is a 'poison' patch, harming the Hive's health.", fg='yellow')
+        else:
+            click.secho("  - Interpretation: This patch is neutral.", fg='blue')
+
+    except Exception as e:
+        click.secho(f"An unexpected error occurred during evolution: {e}", fg='red')
 
 
 # --- New 'measure' Command Group ---
