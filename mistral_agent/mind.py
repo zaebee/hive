@@ -1,105 +1,112 @@
 import litellm
-from typing import Dict
+from typing import Dict, Optional, Protocol
+import logging
+from dataclasses import dataclass
 
-# Set a fallback for the logger to avoid a warning if the user hasn't configured it.
-# In a real application, you would configure logging properly.
-litellm.set_verbose = False
+# Configure proper logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
-def get_llm_suggestion(prompt: str, config: Dict[str, str]) -> str:
+class LLMClientProtocol(Protocol):
+    def completion(self, **kwargs) -> dict:
+        ...
+
+@dataclass
+class LLMConfig:
+    model: str
+    temperature: float = 0.7
+    max_tokens: int = 2048
+    api_key: Optional[str] = None
+    api_base: Optional[str] = None
+
+def get_llm_suggestion(
+    prompt: str,
+    config: LLMConfig,
+    llm_client: LLMClientProtocol = litellm
+) -> str:
     """
     Communicates with an LLM to get a suggestion based on a prompt.
 
-    This function acts as the "Mind" of the Mistral Agent, taking the
-    state report (senses) and using an LLM to "think" of a solution.
-
     Args:
         prompt: The fully-formatted prompt string from the context generator.
-        config: The configuration dictionary parsed from the Mermaid diagram.
-                Expected keys include 'model', 'temperature', 'api_key', etc.
+        config: The configuration object for the LLM call.
+        llm_client: The LLM client implementation (default: litellm)
 
     Returns:
         The string content of the LLM's response.
 
     Raises:
-        ValueError: If the required 'model' key is not in the config.
-        Exception: Propagates exceptions from the litellm API call.
+        ValueError: If the required 'model' is not specified.
+        Exception: Propagates exceptions from the LLM API call.
     """
-    if "model" not in config:
+    if not config.model:
         raise ValueError("LLM 'model' not specified in configuration.")
 
     messages = [{"role": "user", "content": prompt}]
 
-    # Prepare parameters for the litellm call from our config
-    # This dynamically builds the keyword arguments for the completion call.
+    # Prepare parameters for the LLM call
     api_params = {
-        "model": config["model"],
+        "model": config.model,
         "messages": messages,
-        "temperature": float(config.get("temperature", 0.7)),
-        "max_tokens": int(config.get("max_tokens", 2048)),
-        "api_key": config.get("api_key"),
-        "api_base": config.get("api_base")
+        "temperature": config.temperature,
+        "max_tokens": config.max_tokens,
+        "api_key": config.api_key,
+        "api_base": config.api_base
     }
 
     # Remove None values so we don't pass them to the API
     api_params = {k: v for k, v in api_params.items() if v is not None}
 
-    print(f"--- Calling LLM (Model: {api_params['model']}) ---")
+    logger.info(f"Calling LLM (Model: {api_params['model']})")
 
     try:
-        response = litellm.completion(**api_params)
+        response = llm_client.completion(**api_params)
 
         # Extract the content from the response object
         content = response.choices[0].message.content
 
         if not content:
+            logger.warning("Received an empty response from the LLM")
             return "Error: Received an empty response from the LLM."
 
         return content.strip()
 
     except Exception as e:
-        # In a real application, you'd have more specific error handling for different
-        # API exceptions (e.g., AuthenticationError, RateLimitError).
-        print(f"An error occurred during the LLM API call: {e}")
+        logger.error(f"An error occurred during the LLM API call: {e}")
         raise
+
+def parse_llm_config(config_dict: Dict[str, str]) -> LLMConfig:
+    """Helper function to parse a dictionary into an LLMConfig object."""
+    if "model" not in config_dict:
+        raise ValueError("LLM 'model' not specified in configuration dictionary.")
+    return LLMConfig(
+        model=config_dict.get("model"),
+        temperature=float(config_dict.get("temperature", 0.7)),
+        max_tokens=int(config_dict.get("max_tokens", 2048)),
+        api_key=config_dict.get("api_key"),
+        api_base=config_dict.get("api_base")
+    )
 
 if __name__ == '__main__':
     import os
-    # This demonstration requires a valid API key for an LLM provider.
-    # We will mock this call in the unit tests.
-    print("--- Mistral Agent's Mind Demonstration ---")
-
-    # To run this demo:
-    # 1. Have an API key for a provider like OpenAI, Anthropic, or Mistral AI.
-    # 2. Set it as an environment variable, e.g., `export OPENAI_API_KEY="sk-..."`
-    # litellm will automatically detect and use it.
-
     from mistral_agent.config import parse_mermaid_config
 
-    config_file = 'mistral_agent/config.md'
+    print("--- Mistral Agent's Mind Demonstration (Refactored) ---")
 
-    # The parser needs the dummy env var to be set for the api_key field in the config
+    config_file = 'mistral_agent/config.md'
     os.environ['MISTRAL_API_KEY'] = os.environ.get("MISTRAL_API_KEY", "dummy_key_for_parser")
 
     try:
-        llm_config = parse_mermaid_config(config_file)
+        raw_config = parse_mermaid_config(config_file)
+        llm_config = parse_llm_config(raw_config)
 
-        # For the live demo, let's override the model to one that litellm can easily access
-        # if the corresponding API key is set in the environment.
         if "OPENAI_API_KEY" in os.environ:
-             llm_config["model"] = "gpt-3.5-turbo"
-             llm_config["api_key"] = os.environ["OPENAI_API_KEY"]
-        elif "MISTRAL_API_KEY" != "dummy_key_for_parser":
-             llm_config["model"] = "mistral/mistral-tiny"
-        else:
-            print("\nNo major LLM API key found in environment (e.g., OPENAI_API_KEY).")
-            print("The API call will likely fail, which is expected.")
-            # We still need a valid model name for litellm to attempt the call
-            llm_config["model"] = "gpt-3.5-turbo"
+             llm_config.model = "gpt-3.5-turbo"
+             llm_config.api_key = os.environ["OPENAI_API_KEY"]
 
+        dummy_prompt = "Explain 'autopoiesis' in the context of software in 50 words."
 
-        dummy_prompt = "Explain the concept of 'emergent behavior' in 50 words."
-
-        print(f"\nSending prompt to model '{llm_config.get('model')}'...")
+        print(f"\nSending prompt to model '{llm_config.model}'...")
 
         suggestion = get_llm_suggestion(prompt=dummy_prompt, config=llm_config)
 
@@ -108,9 +115,8 @@ if __name__ == '__main__':
         print("--------------------")
 
     except Exception as e:
-        print(f"\nDemonstration failed as expected without a valid API key.")
+        print(f"\nDemonstration failed. This is expected without a valid API key.")
         print(f"Error: {e}")
 
-    # Clean up dummy env var
     if os.environ.get('MISTRAL_API_KEY') == "dummy_key_for_parser":
         del os.environ['MISTRAL_API_KEY']

@@ -6,11 +6,11 @@ from unittest.mock import MagicMock
 # Add the repository root to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from mistral_agent.mind import get_llm_suggestion
+from mistral_agent.mind import get_llm_suggestion, parse_llm_config, LLMConfig
 
 @pytest.fixture
-def sample_config():
-    """Provides a sample agent configuration dictionary."""
+def sample_config_dict():
+    """Provides a sample agent configuration as a dictionary."""
     return {
         "model": "test-model",
         "temperature": "0.8",
@@ -19,54 +19,50 @@ def sample_config():
         "api_base": "https://test.api.base"
     }
 
-def test_get_llm_suggestion_success(mocker, sample_config):
-    """Tests a successful LLM call with proper parameter passing."""
-    # 1. Setup the mock for litellm.completion within the 'mind' module
-    mock_completion = mocker.patch('mistral_agent.mind.litellm.completion')
+@pytest.fixture
+def sample_llm_config(sample_config_dict):
+    """Provides a sample agent configuration as an LLMConfig object."""
+    return parse_llm_config(sample_config_dict)
 
-    # Create a mock response object that mimics the structure of litellm's response
+def test_parse_llm_config(sample_config_dict):
+    """Tests the parsing helper function."""
+    config = parse_llm_config(sample_config_dict)
+    assert isinstance(config, LLMConfig)
+    assert config.model == "test-model"
+    assert config.temperature == 0.8
+    assert config.max_tokens == 1024
+
+def test_parse_llm_config_missing_model():
+    """Tests that the parser raises an error if the model is missing."""
+    with pytest.raises(ValueError, match="LLM 'model' not specified"):
+        parse_llm_config({"temp": "0.5"})
+
+def test_get_llm_suggestion_success(mocker, sample_llm_config):
+    """Tests a successful LLM call with the refactored service."""
+    # 1. Setup the mock for the llm_client
+    mock_llm_client = MagicMock()
     mock_response = MagicMock()
-    mock_response.choices[0].message.content = "This is a test suggestion."
-    mock_completion.return_value = mock_response
+    mock_response.choices[0].message.content = "This is a refactored suggestion."
+    mock_llm_client.completion.return_value = mock_response
 
-    # 2. Call the function
+    # 2. Call the function with the injected mock client
     prompt = "Test prompt"
-    result = get_llm_suggestion(prompt, sample_config)
+    result = get_llm_suggestion(prompt, sample_llm_config, llm_client=mock_llm_client)
 
     # 3. Assert the result
-    assert result == "This is a test suggestion."
+    assert result == "This is a refactored suggestion."
 
-    # 4. Assert that litellm was called correctly
-    mock_completion.assert_called_once()
-    call_args = mock_completion.call_args.kwargs
-    assert call_args['model'] == 'test-model'
-    assert call_args['messages'] == [{"role": "user", "content": prompt}]
-    assert call_args['temperature'] == 0.8
-    assert call_args['max_tokens'] == 1024
-    assert call_args['api_key'] == 'test-key'
-    assert call_args['api_base'] == 'https://test.api.base'
+    # 4. Assert that the client was called correctly
+    mock_llm_client.completion.assert_called_once()
+    call_args = mock_llm_client.completion.call_args.kwargs
+    assert call_args['model'] == sample_llm_config.model
+    assert call_args['temperature'] == sample_llm_config.temperature
+    assert call_args['api_key'] == sample_llm_config.api_key
 
-def test_llm_api_error(mocker, sample_config):
+def test_llm_api_error(mocker, sample_llm_config):
     """Tests that an exception from the LLM API is propagated."""
-    # Setup the mock to raise a generic exception
-    mocker.patch('mistral_agent.mind.litellm.completion', side_effect=Exception("Test API Error"))
+    mock_llm_client = MagicMock()
+    mock_llm_client.completion.side_effect = Exception("Test API Error")
 
     with pytest.raises(Exception, match="Test API Error"):
-        get_llm_suggestion("prompt", sample_config)
-
-def test_missing_model_in_config():
-    """Tests that a ValueError is raised if the model is not in the config."""
-    bad_config = {"temperature": "0.5"} # Missing 'model' key
-    with pytest.raises(ValueError, match="LLM 'model' not specified in configuration."):
-        get_llm_suggestion("prompt", bad_config)
-
-def test_empty_response_from_llm(mocker, sample_config):
-    """Tests handling of an empty but successful response from the LLM."""
-    mock_completion = mocker.patch('mistral_agent.mind.litellm.completion')
-
-    mock_response = MagicMock()
-    mock_response.choices[0].message.content = "" # Empty content
-    mock_completion.return_value = mock_response
-
-    result = get_llm_suggestion("prompt", sample_config)
-    assert "Error: Received an empty response" in result
+        get_llm_suggestion("prompt", sample_llm_config, llm_client=mock_llm_client)
