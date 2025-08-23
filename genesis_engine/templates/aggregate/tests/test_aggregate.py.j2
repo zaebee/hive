@@ -1,0 +1,14 @@
+import pytest
+from ..aggregate import {{ component_name_pascal_case }}
+from ..events import {{ component_name_pascal_case }}Created
+
+def test_create_{{ component_name }}():
+    aggregate = {{ component_name_pascal_case }}()
+    aggregate.create(name="test {{ component_name }}")
+
+    events = aggregate.pull_events()
+    assert len(events) == 1
+
+    event = events[0]
+    assert isinstance(event, {{ component_name_pascal_case }}Created)
+    assert event.name == "test {{ component_name }}"

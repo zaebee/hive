@@ -1,0 +1,14 @@
+from hive.core.aggregate import AggregateRoot
+from .events import {{ component_name_pascal_case }}Created
+
+class {{ component_name_pascal_case }}(AggregateRoot):
+
+    def __init__(self):
+        super().__init__()
+        self.name = None
+
+    def create(self, name: str):
+        self.apply({{ component_name_pascal_case }}Created(name=name))
+
+    def _on_{{ component_name }}_created(self, event: {{ component_name_pascal_case }}Created):
+        self.name = event.name

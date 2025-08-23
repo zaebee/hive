@@ -23,6 +23,7 @@ dependencies = [
     "click",
     "GitPython",
     "requests",
+    "Jinja2",
 ]
 
 [project.urls]
@@ -35,4 +36,4 @@ kubernetes = ["kubernetes"]
 llm = ["litellm"]
 
 [tool.setuptools]
-packages = ["hive_physics", "mistral_agent"]
+packages = ["hive_physics", "mistral_agent", "genesis_engine"]
