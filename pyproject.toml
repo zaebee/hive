@@ -31,3 +31,4 @@ dependencies = [
 
 [project.optional-dependencies]
 prometheus = ["prometheus-client"]
+kubernetes = ["kubernetes"]

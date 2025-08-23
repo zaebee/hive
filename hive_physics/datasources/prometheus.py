@@ -70,6 +70,32 @@ class PrometheusDataSource:
             print(f"Unexpected or malformed response from Prometheus for query: {query}")
             return None
 
+    def get_component_charge(self, component_name: str) -> Optional[int]:
+        """
+        Fetches the 'charge' of a component from Prometheus.
+
+        This uses the DNA-Matched Metric: `hive_dna_component_charge`.
+        """
+        query = f'hive_dna_component_charge{{component_name="{component_name}"}}'
+        print(f"Executing PromQL query: {query}")
+
+        try:
+            response = requests.get(f"{self.api_url}/query", params={'query': query}, timeout=10)
+            response.raise_for_status()
+            result = response.json()
+
+            if result.get('status') == 'success' and result.get('data', {}).get('result'):
+                charge_str = result['data']['result'][0]['value'][1]
+                return int(float(charge_str))
+            else:
+                return None
+        except requests.RequestException as e:
+            print(f"Error querying Prometheus: {e}")
+            return None
+        except (KeyError, IndexError, TypeError, ValueError):
+            print(f"Unexpected or malformed response from Prometheus for query: {query}")
+            return None
+
 if __name__ == '__main__':
     print("--- Prometheus Data Source Demonstration ---")
 
@@ -87,11 +113,17 @@ if __name__ == '__main__':
         print(f"\nQuerying mass for component: '{component_to_query}'...")
 
         mass = datasource.get_component_mass(component_to_query)
+        charge = datasource.get_component_charge(component_to_query)
 
         if mass is not None:
             print(f"  - Successfully retrieved mass: {mass:.4f}")
         else:
-            print("  - No data found for this component. This is expected if the component hasn't emitted metrics.")
+            print("  - No 'mass' data found for this component.")
+
+        if charge is not None:
+            print(f"  - Successfully retrieved charge: {charge}")
+        else:
+            print("  - No 'charge' data found for this component.")
 
     except (ValueError, ConnectionError) as e:
         print(f"\nCould not run demonstration: {e}")
