@@ -24,6 +24,7 @@ dependencies = [
     "GitPython",
     "requests",
     "Jinja2",
+    "tabulate",
 ]
 
 [project.urls]

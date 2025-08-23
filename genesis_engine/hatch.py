@@ -1,4 +1,5 @@
 import os
+import json
 import jinja2
 
 def to_pascal_case(s: str) -> str:
@@ -55,3 +56,14 @@ def hatch_component(component_type: str, component_name: str, domain: str):
                 with open(output_filepath, 'w') as f:
                     f.write(rendered_content)
                 print(f"Created file: {output_filepath}")
+
+    # Create metadata file
+    metadata = {
+        'type': component_type,
+        'name': component_name,
+        'domain': domain,
+    }
+    metadata_filepath = os.path.join(output_dir_base, '.genesis')
+    with open(metadata_filepath, 'w') as f:
+        json.dump(metadata, f, indent=4)
+    print(f"Created metadata file: {metadata_filepath}")

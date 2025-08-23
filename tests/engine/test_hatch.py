@@ -1,4 +1,5 @@
 import os
+import json
 import shutil
 from click.testing import CliRunner
 from genesis_engine.cli import genesis
@@ -52,6 +53,15 @@ def test_hatch_aggregate():
             assert 'from ..aggregate import TestComponent' in content
             assert 'from ..events import TestComponentCreated' in content
             assert 'def test_create_test_component():' in content
+
+        # 4. Check the metadata file
+        metadata_path = os.path.join(output_path, '.genesis')
+        assert os.path.exists(metadata_path)
+        with open(metadata_path, 'r') as f:
+            metadata = json.load(f)
+            assert metadata['type'] == 'aggregate'
+            assert metadata['name'] == component_name
+            assert metadata['domain'] == domain
 
     finally:
         # Clean up created files

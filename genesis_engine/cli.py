@@ -1,5 +1,6 @@
 import click
 from .hatch import hatch_component
+from .listing import list_components
 
 @click.group()
 def genesis():
@@ -9,6 +10,14 @@ def genesis():
     It embodies the core principle that components are born, not built.
     """
     pass
+
+@genesis.command('list')
+@click.option('--type', 'component_type', default=None, help='Filter by component type.')
+@click.option('--domain', default=None, help='Filter by domain.')
+def list_cmd(component_type, domain):
+    """Lists all components in the Hive."""
+    list_components(component_type, domain)
+
 
 @genesis.group()
 def hatch():
