@@ -1,0 +1,13 @@
+# This file defines the transformation logic.
+# A transformation is typically a function that converts an event into a command
+# or performs some other side effect.
+
+def {{ component_name }}(event):
+    """
+    Transforms an incoming event into an outgoing command.
+    """
+    print(f"Transforming event in {{ component_name }}: {event}")
+    # In a real implementation, you would return a command object.
+    # from hive.core.command import Command
+    # return Command(...)
+    return None

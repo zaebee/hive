@@ -1,0 +1,17 @@
+import pytest
+from ..transformation import {{ component_name }}
+
+def test_{{ component_name }}():
+    """
+    Tests the basic execution of the {{ component_name }} transformation.
+    """
+    # Arrange
+    # A mock event or a real event object would be used here.
+    mock_event = {'id': '123', 'data': 'some data'}
+
+    # Act
+    result = {{ component_name }}(mock_event)
+
+    # Assert
+    # A real test would assert the properties of the returned command.
+    assert result is None

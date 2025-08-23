@@ -35,5 +35,15 @@ def aggregate(component_name, domain):
     click.echo(f"Successfully hatched aggregate '{component_name}'.")
 
 
+@hatch.command("transformation")
+@click.argument('component_name')
+@click.option('--domain', required=True, help='The business domain for the component.')
+def transformation(component_name, domain):
+    """Hatches a new transformation component."""
+    click.echo(f"Hatching transformation '{component_name}' in domain '{domain}'...")
+    hatch_component('transformation', component_name, domain)
+    click.echo(f"Successfully hatched transformation '{component_name}'.")
+
+
 if __name__ == '__main__':
     genesis()

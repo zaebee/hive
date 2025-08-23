@@ -9,7 +9,7 @@ def test_list_command():
     # Test data
     components_to_create = [
         {'name': 'component_a', 'domain': 'domain_1', 'type': 'aggregate'},
-        {'name': 'component_b', 'domain': 'domain_1', 'type': 'aggregate'},
+        {'name': 'component_b', 'domain': 'domain_1', 'type': 'transformation'},
         {'name': 'component_c', 'domain': 'domain_2', 'type': 'aggregate'},
     ]
 
@@ -49,15 +49,24 @@ def test_list_command():
         assert 'component_b' in output_domain
         assert 'component_c' not in output_domain
 
-        # 4. Test `genesis list --type`
-        result_list_type = runner.invoke(genesis, ['list', '--type', 'aggregate'], catch_exceptions=False)
-        assert result_list_type.exit_code == 0
-        output_type = result_list_type.output
-        assert 'component_a' in output_type
-        assert 'component_c' in output_type
+        # 4. Test `genesis list --type aggregate`
+        result_list_type_agg = runner.invoke(genesis, ['list', '--type', 'aggregate'], catch_exceptions=False)
+        assert result_list_type_agg.exit_code == 0
+        output_type_agg = result_list_type_agg.output
+        assert 'component_a' in output_type_agg
+        assert 'component_b' not in output_type_agg
+        assert 'component_c' in output_type_agg
 
-        # 5. Test with a type that doesn't exist
-        result_list_notype = runner.invoke(genesis, ['list', '--type', 'transformation'], catch_exceptions=False)
+        # 5. Test `genesis list --type transformation`
+        result_list_type_trans = runner.invoke(genesis, ['list', '--type', 'transformation'], catch_exceptions=False)
+        assert result_list_type_trans.exit_code == 0
+        output_type_trans = result_list_type_trans.output
+        assert 'component_a' not in output_type_trans
+        assert 'component_b' in output_type_trans
+        assert 'component_c' not in output_type_trans
+
+        # 6. Test with a type that doesn't exist
+        result_list_notype = runner.invoke(genesis, ['list', '--type', 'saga'], catch_exceptions=False)
         assert result_list_notype.exit_code == 0
         assert "No components found matching the criteria" in result_list_notype.output
 

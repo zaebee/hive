@@ -67,3 +67,57 @@ def test_hatch_aggregate():
         # Clean up created files
         if os.path.exists(os.path.join('hive', 'components', domain)):
             shutil.rmtree(os.path.join('hive', 'components', domain))
+
+
+def test_hatch_transformation():
+    runner = CliRunner()
+    domain = 'test_domain_trans'
+    component_name = 'test_transformation'
+    output_path = os.path.join('hive', 'components', domain, component_name)
+
+    # Clean up any previous test runs
+    if os.path.exists(os.path.join('hive', 'components', domain)):
+        shutil.rmtree(os.path.join('hive', 'components', domain))
+
+    try:
+        # Run the command
+        result = runner.invoke(
+            genesis,
+            ['hatch', 'transformation', component_name, '--domain', domain],
+            catch_exceptions=False
+        )
+
+        # Check command output and exit code
+        assert result.exit_code == 0, result.output
+        assert f"Successfully hatched transformation '{component_name}'" in result.output
+
+        # --- Verification ---
+        # 1. Check that all expected files were created
+        expected_files = [
+            '__init__.py',
+            'transformation.py',
+            'tests/__init__.py',
+            'tests/test_transformation.py'
+        ]
+        for f in expected_files:
+            file_path = os.path.join(output_path, f)
+            assert os.path.exists(file_path), f"File not found: {file_path}"
+
+        # 2. Check the content of a key file
+        with open(os.path.join(output_path, 'transformation.py'), 'r') as f:
+            content = f.read()
+            assert 'def test_transformation(event):' in content
+
+        # 3. Check the metadata file
+        metadata_path = os.path.join(output_path, '.genesis')
+        assert os.path.exists(metadata_path)
+        with open(metadata_path, 'r') as f:
+            metadata = json.load(f)
+            assert metadata['type'] == 'transformation'
+            assert metadata['name'] == component_name
+            assert metadata['domain'] == domain
+
+    finally:
+        # Clean up created files
+        if os.path.exists(os.path.join('hive', 'components', domain)):
+            shutil.rmtree(os.path.join('hive', 'components', domain))
