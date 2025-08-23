@@ -2,6 +2,7 @@ import click
 from .hatch import hatch_component
 from .listing import list_components
 from .validation import validate_component
+from .analysis import analyze_component
 
 @click.group()
 def genesis():
@@ -27,6 +28,16 @@ def validate_cmd(target, rules):
     """Validates a component against a set of Hive Physics rules."""
     click.echo(f"Validating component at '{target}' using ruleset '{rules}'...")
     validate_component(target, rules)
+
+
+@genesis.command('analyze')
+@click.argument('analysis_type', type=click.Choice(['bonds'], case_sensitive=False))
+@click.option('--component', 'component_name', required=True, help='The name of the component to analyze.')
+@click.option('--domain', default=None, help='The domain of the component (required if name is not unique).')
+def analyze_cmd(analysis_type, component_name, domain):
+    """Performs a deep analysis of a component using Hive Physics."""
+    click.echo(f"Analyzing '{analysis_type}' for component '{component_name}'...")
+    analyze_component(analysis_type, component_name, domain)
 
 
 @genesis.group()
