@@ -6,6 +6,7 @@ import json
 # Since the hive_physics package is now installed in editable mode,
 # we can import from it directly without modifying the path.
 from hive_physics.measurements.temperature import measure_hive_temperature
+from hive_physics.measurements.growth_rate import measure_growth_rate
 from hive_physics.predictors.coupling import predict_bond_strength
 from hive_physics.validation.rules import check_valency_conservation
 from hive_physics.simulators.electromagnetism import find_most_stable_path
@@ -77,6 +78,39 @@ def temperature():
 
     except Exception as e:
         click.secho(f"An unexpected error occurred: {e}", fg='red')
+
+
+@measure.command('growth-rate')
+@click.option('--days', default=7, help='The number of days in the past to measure against.')
+def growth_rate(days):
+    """
+    Measures the Hive Growth Rate (Λ_hive) over a given period.
+    """
+    click.echo(f"📈 Measuring Hive Growth Rate over the last {days} days...")
+
+    try:
+        lambda_hive = measure_growth_rate('.', days) # Use current directory for repo path
+
+        click.echo("Measurement complete.")
+        click.secho(f"  - Hive Growth Rate (Λ_hive): {lambda_hive:.4f} components/day", bold=True)
+
+        if lambda_hive > 0.1:
+            interpretation = "The Hive is in a period of rapid growth."
+            color = "yellow"
+        elif lambda_hive > 0:
+            interpretation = "The Hive is growing slowly and steadily."
+            color = "green"
+        elif lambda_hive == 0:
+            interpretation = "The Hive is stable."
+            color = "blue"
+        else:
+            interpretation = "The Hive is shrinking (refactoring or decommissioning)."
+            color = "red"
+
+        click.secho(f"  - Interpretation: {interpretation}", fg=color)
+
+    except Exception as e:
+        click.secho(f"An error occurred: {e}", fg='red')
 
 
 # --- New 'predict' Command Group ---
