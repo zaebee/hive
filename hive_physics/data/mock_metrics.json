@@ -6,21 +6,31 @@
     "components": [
       {
         "id": "comp_001",
-        "name": "OrderAggregate",
-        "mass": 1500.0,
-        "position": { "x": 10, "y": 20, "z": 5 }
+        "name": "RestConnector",
+        "mass": 200.0,
+        "charge": 1,
+        "connections": ["comp_002"]
       },
       {
         "id": "comp_002",
-        "name": "PaymentTransform",
-        "mass": 800.0,
-        "position": { "x": 12, "y": 25, "z": 5 }
+        "name": "OrderAggregate",
+        "mass": 1500.0,
+        "charge": -1,
+        "connections": ["comp_001", "comp_003"]
       },
       {
         "id": "comp_003",
-        "name": "LogMonitor",
-        "mass": 100.0,
-        "position": { "x": 50, "y": 50, "z": 50 }
+        "name": "PaymentTransform",
+        "mass": 800.0,
+        "charge": 0,
+        "connections": ["comp_002", "comp_004"]
+      },
+      {
+        "id": "comp_004",
+        "name": "PaymentGatewayConnector",
+        "mass": 300.0,
+        "charge": 1,
+        "connections": ["comp_003"]
       }
     ]
   },

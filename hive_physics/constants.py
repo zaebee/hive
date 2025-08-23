@@ -14,3 +14,5 @@ class PhysicalConstants:
     ALPHA_HIVE_TARGET: float = 0.01
     # The default cosmological constant, representing a slow, stable growth rate.
     LAMBDA_HIVE_TARGET: float = 0.001
+    # The Hive's electromagnetic constant, analogous to Coulomb's constant.
+    K_HIVE_ELECTRO: float = 1.0

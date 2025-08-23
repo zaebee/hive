@@ -10,6 +10,7 @@ import json
 from hive_physics.measurements.temperature import measure_hive_temperature
 from hive_physics.predictors.coupling import predict_bond_strength
 from hive_physics.validation.rules import check_valency_conservation
+from hive_physics.simulators.electromagnetism import find_most_stable_path
 
 # This file is a simulation of how the `genesis` CLI tool could be extended.
 # Since the actual source code is in an external repository, this file
@@ -179,8 +180,41 @@ def physics(strict):
             sys.exit(1)
 
 
+# --- New 'simulate' Command Group ---
+@cli.group()
+def simulate():
+    """Runs simulations based on Hive's physical laws."""
+    pass
+
+@simulate.command('workflow')
+@click.option('--start-component', required=True, help='The ID of the component to start the simulation from.')
+def workflow(start_component):
+    """
+    Simulates a stable workflow path using the Electromagnetism model.
+    """
+    click.echo(f"⚡ Simulating stable workflow starting from '{start_component}'...")
+    mock_file_path = 'hive_physics/data/mock_metrics.json'
+
+    if not os.path.exists(mock_file_path):
+        click.secho(f"Error: Mock data file not found at '{mock_file_path}'.", fg='red')
+        return
+
+    try:
+        stable_path = find_most_stable_path(mock_file_path, start_component)
+
+        path_str = " -> ".join(stable_path)
+        click.echo("Simulation complete.")
+        click.secho(f"  - Discovered Stable Path: {path_str}", bold=True)
+        click.secho("  - Interpretation: This path represents the most energetically favorable workflow based on component charges and architectural distance.", fg='cyan')
+
+    except ValueError as ve:
+        click.secho(f"Input Error: {ve}", fg='red')
+    except Exception as e:
+        click.secho(f"An unexpected error occurred during simulation: {e}", fg='red')
+
+
 if __name__ == '__main__':
     # This makes the script runnable and allows testing the CLI structure.
     # Example usage from your terminal:
-    # python hive_physics/genesis-cli-integration-example.py validate physics --strict
+    # python hive_physics/genesis-cli-integration-example.py simulate workflow --start-component comp_001
     cli()
