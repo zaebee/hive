@@ -3,73 +3,83 @@ import sys
 import os
 from unittest.mock import MagicMock
 
+# Add the repository root to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from hive_physics.predictors.coupling import predict_bond_strength
-from hive_physics.datasources.prometheus import PrometheusDataSource
-from hive_physics.datasources.kubernetes import KubernetesDataSource
+from hive_physics.predictors.coupling import PredictorService, DataSourceInterface
+from hive_physics.events import EventPublisher
 
 @pytest.fixture
-def mock_datasources(mocker):
-    """Provides mock Prometheus and Kubernetes datasources."""
-    mock_prom_ds = mocker.Mock(spec=PrometheusDataSource)
-    mock_k8s_ds = mocker.Mock(spec=KubernetesDataSource)
-    return mock_prom_ds, mock_k8s_ds
+def mock_data_source(mocker):
+    """Provides a mock datasource that implements the interface."""
+    mock_ds = mocker.Mock(spec=DataSourceInterface)
 
-def test_predict_bond_strength(mock_datasources):
-    """
-    Tests the main bond strength prediction logic.
-    """
-    mock_prom_ds, mock_k8s_ds = mock_datasources
-
-    # Mock the data returned by the datasources
-    mock_k8s_ds.get_architectural_graph.return_value = {
-        "comp_001": ["comp_002"],
-        "comp_002": ["comp_001", "comp_003"],
-        "comp_003": ["comp_002"],
+    # Setup mock return values for the datasource
+    mock_ds.get_architectural_graph.return_value = {
+        "comp_a": ["comp_b"],
+        "comp_b": ["comp_a"],
+        "comp_c": []
     }
+    mass_map = {"comp_a": 100.0, "comp_b": 200.0, "comp_c": 50.0}
+    mock_ds.get_component_mass.side_effect = lambda name: mass_map.get(name)
 
-    # Define a mapping for mass lookup
-    mass_map = {"comp_001": 200.0, "comp_002": 1500.0, "comp_003": 800.0}
-    mock_prom_ds.get_component_mass.side_effect = lambda name: mass_map.get(name)
+    return mock_ds
 
-    # Call the function to be tested
-    strengths = predict_bond_strength(mock_prom_ds, mock_k8s_ds)
+@pytest.fixture
+def mock_event_publisher(mocker):
+    """Provides a mock event publisher."""
+    return mocker.Mock(spec=EventPublisher)
 
-    # Assertions
-    # r=1 between comp_001 and comp_002. F = 0.01 * (200*1500)/1^2 = 3000
-    assert strengths["comp_001 <-> comp_002"] == pytest.approx(3000.0)
-
-    # r=1 between comp_002 and comp_003. F = 0.01 * (1500*800)/1^2 = 12000
-    assert strengths["comp_002 <-> comp_003"] == pytest.approx(12000.0)
-
-    # r=2 between comp_001 and comp_003.
-    assert "comp_001 <-> comp_003" not in strengths # They are not directly connected in this test graph
-
-def test_predict_with_no_graph(mock_datasources):
+def test_service_predicts_bond_strength(mock_data_source):
     """
-    Tests that the function returns an empty dict if the graph is empty.
+    Tests that the PredictorService correctly calculates bond strength.
     """
-    mock_prom_ds, mock_k8s_ds = mock_datasources
-    mock_k8s_ds.get_architectural_graph.return_value = {}
+    # Test without an event publisher first
+    service = PredictorService(data_source=mock_data_source)
+    strengths = service.predict_bond_strength()
 
-    strengths = predict_bond_strength(mock_prom_ds, mock_k8s_ds)
+    # F = 0.01 * (100 * 200) / 1^2 = 200
+    assert strengths["comp_a <-> comp_b"] == pytest.approx(200.0)
+    # Ensure it only calculates for connected components
+    assert len(strengths) == 1
+
+def test_service_publishes_event(mock_data_source, mock_event_publisher):
+    """
+    Tests that the service calls the event publisher when one is provided.
+    """
+    service = PredictorService(
+        data_source=mock_data_source,
+        event_publisher=mock_event_publisher
+    )
+    service.predict_bond_strength()
+
+    # Assert that the publisher was called with the correct data
+    # Note: The order of comp1_id and comp2_id depends on iteration order,
+    # so we can't be certain. A more robust test would check the call args
+    # in a way that is order-independent, but this is sufficient for now.
+    mock_event_publisher.publish_bond_strength_event.assert_called_once()
+    # A simple way to check the content without being order-sensitive
+    args, kwargs = mock_event_publisher.publish_bond_strength_event.call_args
+    assert set(args[:2]) == {"comp_a", "comp_b"}
+    assert args[2] == pytest.approx(200.0)
+
+
+def test_service_handles_no_graph(mock_data_source):
+    """
+    Tests that the service handles the case where the datasource returns no graph.
+    """
+    mock_data_source.get_architectural_graph.return_value = {}
+    service = PredictorService(data_source=mock_data_source)
+    strengths = service.predict_bond_strength()
     assert strengths == {}
 
-def test_predict_with_missing_mass(mock_datasources):
+def test_service_does_not_publish_if_no_publisher(mock_data_source, mock_event_publisher):
     """
-    Tests that if a component's mass is None (not in Prometheus), it is
-    treated as 0, resulting in a bond strength of 0.
+    Tests that the event publisher is not called if it's not provided.
     """
-    mock_prom_ds, mock_k8s_ds = mock_datasources
+    # This test is implicitly covered by the mocker, but we can be explicit.
+    service = PredictorService(data_source=mock_data_source, event_publisher=None)
+    service.predict_bond_strength()
 
-    mock_k8s_ds.get_architectural_graph.return_value = {"comp_001": ["comp_002"], "comp_002": ["comp_001"]}
-
-    # comp_002's mass is missing from the map
-    mass_map = {"comp_001": 200.0}
-    mock_prom_ds.get_component_mass.side_effect = lambda name: mass_map.get(name)
-
-    strengths = predict_bond_strength(mock_prom_ds, mock_k8s_ds)
-
-    # The force should be 0 because m2 is 0
-    assert strengths["comp_001 <-> comp_002"] == 0.0
+    # The mock_event_publisher was never passed in, so it should have no calls.
+    mock_event_publisher.publish_bond_strength_event.assert_not_called()

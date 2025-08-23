@@ -11,6 +11,6 @@ graph TD
     A --> D{Hands}
 
     %% Agent Configuration is defined by its style
-    classDef agent-style model:gpt-4-turbo,temperature:0.5,max_tokens:2048
+    classDef agent-style model:mistral/mistral-small-latest,temperature:0.5,max_tokens:2048
     classDef agent-secrets api_key:env_MISTRAL_API_KEY,api_base:https://api.mistral.ai/v1
 ```
