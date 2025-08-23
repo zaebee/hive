@@ -4,10 +4,23 @@ The Adaptation Aggregate - the core of the Adaptation Engine.
 import re
 from pathlib import Path
 from typing import List, Dict, Optional
+from dataclasses import dataclass
 
 from hive_physics.dna_core.royal_jelly import SacredAggregate, SacredCommand, PollenEnvelope
 from hive_physics.adaptation.toxicity import calculate_toxicity_score
 from hive_physics.adaptation.patcher import apply_patch_with_git
+
+class EvolutionaryPulse(PollenEnvelope):
+    """
+    An event carrying a proposed code change for the Hive to consider.
+    """
+    def __init__(self, patch: str):
+        super().__init__(
+            event_type="EvolutionaryPulse",
+            payload={"patch": patch}
+        )
+        self.patch = patch
+
 
 class ApplyPatchCommand(SacredCommand):
     def __init__(self, patch: str):

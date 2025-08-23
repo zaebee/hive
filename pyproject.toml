@@ -24,6 +24,7 @@ dependencies = [
     "GitPython",
     "requests",
     "radon",
+    "litellm",
 ]
 
 [project.urls]
