@@ -3,6 +3,7 @@ from .hatch import hatch_component
 from .listing import list_components
 from .validation import validate_component
 from .analysis import analyze_component
+from .initialization import initialize_project
 
 @click.group()
 def genesis():
@@ -12,6 +13,16 @@ def genesis():
     It embodies the core principle that components are born, not built.
     """
     pass
+
+
+@genesis.command('init')
+@click.argument('project_name')
+@click.option('--template', default='standard', help='The project template to use.')
+def init_cmd(project_name, template):
+    """Initializes a new Hive project."""
+    click.echo(f"Initializing new Hive project '{project_name}' using template '{template}'...")
+    initialize_project(project_name, template)
+
 
 @genesis.command('list')
 @click.option('--type', 'component_type', default=None, help='Filter by component type.')
