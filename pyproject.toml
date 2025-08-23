@@ -32,3 +32,7 @@ dependencies = [
 [project.optional-dependencies]
 prometheus = ["prometheus-client"]
 kubernetes = ["kubernetes"]
+llm = ["litellm"]
+
+[tool.setuptools]
+packages = ["hive_physics", "mistral_agent"]
