@@ -6,7 +6,10 @@ import sys
 # This is for demonstration purposes. In a real scenario, hive-physics would be an installed package.
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+import json
 from hive_physics.measurements.temperature import measure_hive_temperature
+from hive_physics.predictors.coupling import predict_bond_strength
+from hive_physics.validation.rules import check_valency_conservation
 
 # This file is a simulation of how the `genesis` CLI tool could be extended.
 # Since the actual source code is in an external repository, this file
@@ -79,8 +82,105 @@ def temperature():
         click.secho(f"An unexpected error occurred: {e}", fg='red')
 
 
+# --- New 'predict' Command Group ---
+@cli.group()
+def predict():
+    """Predicts physical phenomena in the Hive."""
+    pass
+
+@predict.command('bond-strength')
+@click.option('--c1', required=True, help='The ID of the first component.')
+@click.option('--c2', required=True, help='The ID of the second component.')
+def bond_strength(c1, c2):
+    """
+    Predicts the bond strength (gravitational force) between two components.
+    """
+    click.echo(f"🛰️  Predicting bond strength between '{c1}' and '{c2}'...")
+    mock_file_path = 'hive_physics/data/mock_metrics.json'
+
+    if not os.path.exists(mock_file_path):
+        click.secho(f"Error: Mock data file not found at '{mock_file_path}'.", fg='red')
+        return
+
+    try:
+        strength = predict_bond_strength(mock_file_path, c1, c2)
+        click.echo("Prediction complete.")
+        click.secho(f"  - Predicted Force (F): {strength:.4f}", bold=True)
+
+        # Add some interpretation
+        if strength == float('inf'):
+            click.secho("  - Interpretation: The components are at the same position (singularity). Infinite coupling.", fg='red')
+        elif strength > 100:
+            click.secho("  - Interpretation: A very strong bond. These components are tightly coupled.", fg='yellow')
+        elif strength < 1:
+            click.secho("  - Interpretation: A weak bond. These components are loosely coupled.", fg='green')
+        else:
+            click.secho("  - Interpretation: A moderate bond.", fg='blue')
+
+    except Exception as e:
+        click.secho(f"An unexpected error occurred: {e}", fg='red')
+
+
+# --- New 'validate' Command Group ---
+@cli.group()
+def validate():
+    """Validates the Hive against architectural and physical laws."""
+    pass
+
+@validate.command('physics')
+@click.option('--strict', is_flag=True, help='Exit with an error code if validation fails.')
+def physics(strict):
+    """
+    Validates the Hive against physical laws like Valency Conservation.
+    """
+    click.echo("⚖️  Validating Hive against physical laws...")
+    mock_file_path = 'hive_physics/data/mock_metrics.json'
+
+    if not os.path.exists(mock_file_path):
+        click.secho(f"Error: Mock data file not found at '{mock_file_path}'.", fg='red')
+        if strict:
+            sys.exit(1)
+        return
+
+    try:
+        with open(mock_file_path, 'r') as f:
+            data = json.load(f)
+
+        workflows = data.get("sample_workflows", {})
+        if not workflows:
+            click.secho("No workflows found in mock data to validate.", fg='yellow')
+            return
+
+        click.echo(f"Found {len(workflows)} workflows to validate.")
+        all_passed = True
+
+        for wf_name in workflows:
+            conserved, total_in, total_out = check_valency_conservation(mock_file_path, wf_name)
+            if conserved:
+                message = f"✅ PASSED: Workflow '{wf_name}' conserves valency ({total_in} -> {total_out})."
+                click.secho(message, fg='green')
+            else:
+                message = f"❌ FAILED: Workflow '{wf_name}' violates Valency Conservation ({total_in} -> {total_out})."
+                click.secho(message, fg='red', bold=True)
+                all_passed = False
+
+        click.echo("-" * 20)
+        if all_passed:
+            click.secho("🎉 All physics validations passed!", bold=True, fg='green')
+        else:
+            click.secho("🔥 Some physics validations failed.", bold=True, fg='red')
+            if strict:
+                click.secho("Exiting with error code due to --strict flag.", fg='red')
+                sys.exit(1)
+
+    except Exception as e:
+        click.secho(f"An unexpected error occurred: {e}", fg='red')
+        if strict:
+            sys.exit(1)
+
+
 if __name__ == '__main__':
     # This makes the script runnable and allows testing the CLI structure.
     # Example usage from your terminal:
-    # python hive_physics/genesis-cli-integration-example.py measure temperature
+    # python hive_physics/genesis-cli-integration-example.py validate physics --strict
     cli()
