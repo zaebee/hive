@@ -1,12 +1,10 @@
 import click
 import os
 import sys
-
-# Add the repository root to the Python path to allow imports from hive_physics.
-# This is for demonstration purposes. In a real scenario, hive-physics would be an installed package.
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 import json
+
+# Since the hive_physics package is now installed in editable mode,
+# we can import from it directly without modifying the path.
 from hive_physics.measurements.temperature import measure_hive_temperature
 from hive_physics.predictors.coupling import predict_bond_strength
 from hive_physics.validation.rules import check_valency_conservation
@@ -50,8 +48,6 @@ def temperature():
     """
     click.echo("🌡️  Measuring Hive Temperature...")
 
-    # In a real application, the path might be configured.
-    # Here, we assume a relative path from the repo root.
     mock_file_path = 'hive_physics/data/mock_metrics.json'
 
     if not os.path.exists(mock_file_path):
@@ -108,7 +104,6 @@ def bond_strength(c1, c2):
         click.echo("Prediction complete.")
         click.secho(f"  - Predicted Force (F): {strength:.4f}", bold=True)
 
-        # Add some interpretation
         if strength == float('inf'):
             click.secho("  - Interpretation: The components are at the same position (singularity). Infinite coupling.", fg='red')
         elif strength > 100:

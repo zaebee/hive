@@ -1,10 +1,5 @@
 import json
-import sys
-import os
 from typing import List, Dict, Any
-
-# Add the repository root to the path to allow relative imports
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from hive_physics.constants import PhysicalConstants
 from hive_physics.utils.graph import build_adjacency_list, calculate_architectural_hops

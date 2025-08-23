@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hive-physics"
+version = "0.1.0"
+authors = [
+    { name="Jules", email="jules@example.com" },
+]
+description = "A library for modeling software architecture using physical laws, based on the Hive framework."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "click",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/example/hive-architecture"
+"Bug Tracker" = "https://github.com/example/hive-architecture/issues"
