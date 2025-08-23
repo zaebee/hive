@@ -1,0 +1,125 @@
+{
+  "__inputs": [],
+  "__requires": [],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Hive Temperature (T_hive)",
+      "type": "stat",
+      "description": "The average event processing rate per component. T_hive = (Total Events / Second) / (Number of Components)",
+      "gridPos": { "h": 8, "w": 6, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(hive_dna_genesis_events_emitted_total[5m])) / count(count by (component_name) (hive_dna_component_charge))",
+          "legendFormat": "T_hive"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          { "color": "blue", "value": null },
+          { "color": "green", "value": 10 },
+          { "color": "yellow", "value": 100 },
+          { "color": "red", "value": 1000 }
+        ]
+      },
+      "colorMode": "background",
+      "textMode": "auto"
+    },
+    {
+      "id": 2,
+      "title": "Bond Strength Ratio (α_hive)",
+      "type": "stat",
+      "description": "The ratio of strong to weak bonds in the Hive. A measure of architectural rigidity.",
+      "gridPos": { "h": 8, "w": 6, "x": 6, "y": 0 },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(hive_physics_bond_strength > 0.5) / sum(hive_physics_bond_strength <= 0.5)",
+          "legendFormat": "α_hive"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          { "color": "green", "value": null },
+          { "color": "yellow", "value": 0.1 },
+          { "color": "red", "value": 1 }
+        ]
+      },
+      "colorMode": "background",
+      "textMode": "auto"
+    },
+    {
+      "id": 3,
+      "title": "Hive Growth Rate (Λ_hive)",
+      "type": "stat",
+      "description": "The expansion or contraction rate of the Hive in components per day.",
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "hive_physics_lambda_hive",
+          "legendFormat": "Λ_hive"
+        }
+      ],
+      "colorMode": "value",
+      "textMode": "auto"
+    },
+    {
+      "id": 4,
+      "title": "Event Propagation Speed (C_hive)",
+      "type": "timeseries",
+      "description": "The maximum rate at which Genesis Events can flow through the Hive.",
+      "gridPos": { "h": 16, "w": 24, "x": 0, "y": 8 },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "hive_physics_c_hive_events_per_second",
+          "legendFormat": "C_hive"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          { "color": "green", "value": null },
+          { "color": "red", "value": 8000 }
+        ]
+      }
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": ["hive-physics"],
+  "templating": { "list": [] },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "The Hive - Physical Observatory",
+  "uid": "hive-physics-dashboard-v1",
+  "version": 1
+}

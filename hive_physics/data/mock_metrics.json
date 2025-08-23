@@ -1,0 +1,86 @@
+{
+  "hive_snapshot": {
+    "timestamp": "2025-08-22T11:14:00Z",
+    "total_components": 150,
+    "notes": "A snapshot of Hive metrics at a specific point in time. Used for mock data.",
+    "components": [
+      {
+        "id": "comp_001",
+        "name": "RestConnector",
+        "mass": 200.0,
+        "charge": 1,
+        "connections": ["comp_002"]
+      },
+      {
+        "id": "comp_002",
+        "name": "OrderAggregate",
+        "mass": 1500.0,
+        "charge": -1,
+        "connections": ["comp_001", "comp_003"]
+      },
+      {
+        "id": "comp_003",
+        "name": "PaymentTransform",
+        "mass": 800.0,
+        "charge": 0,
+        "connections": ["comp_002", "comp_004"]
+      },
+      {
+        "id": "comp_004",
+        "name": "PaymentGatewayConnector",
+        "mass": 300.0,
+        "charge": 1,
+        "connections": ["comp_003"]
+      }
+    ]
+  },
+  "recent_events": [
+    {
+      "event_id": "a1b2c3d4-0001",
+      "timestamp": "2025-08-22T11:13:59.105Z"
+    },
+    {
+      "event_id": "a1b2c3d4-0002",
+      "timestamp": "2025-08-22T11:13:59.215Z"
+    },
+    {
+      "event_id": "a1b2c3d4-0003",
+      "timestamp": "2025-08-22T11:13:59.430Z"
+    },
+    {
+      "event_id": "a1b2c3d4-0004",
+      "timestamp": "2025-08-22T11:13:59.555Z"
+    },
+    {
+      "event_id": "a1b2c3d4-0005",
+      "timestamp": "2025-08-22T11:13:59.780Z"
+    },
+    {
+      "event_id": "a1b2c3d4-0006",
+      "timestamp": "2025-08-22T11:13:59.995Z"
+    },
+    {
+      "event_id": "a1b2c3d4-0007",
+      "timestamp": "2025-08-22T11:14:00.100Z"
+    }
+  ],
+  "sample_workflows": {
+    "OrderPlacement": {
+      "description": "A well-balanced workflow for placing an order.",
+      "steps": [
+        { "primitive": "RestConnector", "valency": [0, 1] },
+        { "primitive": "OrderAggregate", "valency": [1, 1] },
+        { "primitive": "PaymentTransform", "valency": [1, 1] },
+        { "primitive": "ShippingConnector", "valency": [1, 0] }
+      ]
+    },
+    "UnbalancedWorkflow": {
+      "description": "An unbalanced workflow for testing validation.",
+      "steps": [
+        { "primitive": "Orchestrator", "valency": [1, 3] },
+        { "primitive": "AggregateA", "valency": [1, 1] },
+        { "primitive": "AggregateB", "valency": [1, 1] }
+      ]
+    }
+  }
+}
