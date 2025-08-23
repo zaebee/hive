@@ -25,6 +25,7 @@ dependencies = [
     "requests",
     "Jinja2",
     "tabulate",
+    "graphviz",
 ]
 
 [project.urls]

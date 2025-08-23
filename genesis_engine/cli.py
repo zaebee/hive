@@ -4,6 +4,7 @@ from .listing import list_components
 from .validation import validate_component
 from .analysis import analyze_component
 from .initialization import initialize_project
+from .graphing import generate_graph
 
 @click.group()
 def genesis():
@@ -49,6 +50,15 @@ def analyze_cmd(analysis_type, component_name, domain):
     """Performs a deep analysis of a component using Hive Physics."""
     click.echo(f"Analyzing '{analysis_type}' for component '{component_name}'...")
     analyze_component(analysis_type, component_name, domain)
+
+
+@genesis.command('graph')
+@click.argument('graph_type', type=click.Choice(['codons'], case_sensitive=False))
+@click.option('--output', default='hive_graph', help='The base name for the output file (e.g., hive_graph.svg).')
+def graph_cmd(graph_type, output):
+    """Generates a visual diagram of the Hive's architecture."""
+    click.echo(f"Generating '{graph_type}' graph...")
+    generate_graph(graph_type, output)
 
 
 @genesis.group()

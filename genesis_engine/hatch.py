@@ -14,9 +14,14 @@ def hatch_component(component_type: str, component_name: str, domain: str):
     :param component_name: The name of the new component (e.g., 'shopping_cart').
     :param domain: The business domain for the component (e.g., 'e_commerce').
     """
-    # Define paths
-    template_dir = os.path.join('genesis_engine', 'templates', component_type)
+    # Define paths robustly
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    template_dir = os.path.join(current_dir, 'templates', component_type)
     output_dir_base = os.path.join('hive', 'components', domain, component_name)
+
+    if not os.path.isdir(template_dir):
+        print(f"Error: Template type '{component_type}' not found.")
+        return
 
     # Create context for Jinja2 rendering
     context = {
@@ -25,32 +30,29 @@ def hatch_component(component_type: str, component_name: str, domain: str):
         'domain': domain,
     }
 
-    # Set up Jinja2 environment
+    # Set up Jinja2 environment with a reliable loader path
     env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(searchpath='.'),
+        loader=jinja2.FileSystemLoader(searchpath=template_dir),
         trim_blocks=True,
         lstrip_blocks=True,
     )
 
     # Walk through the template directory
     for root, dirs, files in os.walk(template_dir):
-        # Determine the relative path from the template directory
         relative_dir = os.path.relpath(root, template_dir)
 
-        # Create corresponding directories in the output path
         current_output_dir = os.path.join(output_dir_base, relative_dir) if relative_dir != '.' else output_dir_base
         os.makedirs(current_output_dir, exist_ok=True)
 
         for filename in files:
             if filename.endswith('.j2'):
-                template_file = os.path.join(root, filename)
-                template = env.get_template(template_file)
+                # Template name for Jinja is relative to the loader's search path
+                template_name = os.path.join(relative_dir, filename) if relative_dir != '.' else filename
+                template = env.get_template(template_name)
 
-                # Render the template
                 rendered_content = template.render(context)
 
-                # Write the rendered file to the output directory
-                output_filename = filename[:-3]  # Remove the .j2 extension
+                output_filename = filename[:-3]
                 output_filepath = os.path.join(current_output_dir, output_filename)
 
                 with open(output_filepath, 'w') as f:
