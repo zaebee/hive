@@ -383,3 +383,17 @@ As you master the Hive Architecture, you'll naturally progress through these sta
 - **[Genesis Engine](../genesis-engine/)** - Code generation and scaffolding tools
 - **[Working Examples](../hive/components/)** - Live Hive components
 - **[Pollen Protocol](../dna_core/pollen_protocol.proto)** - Inter-hive communication standard
+
+---
+
+## 🔬 The Physics of the Hive
+
+While the core Hive Architecture is built on biological and chemical metaphors, a new layer of analysis has been developed to model the macro-behavior of the system using the laws of physics. This is the domain of the **`hive-physics` library**.
+
+The `hive-physics` library is a tool that allows you to measure, predict, and simulate the physical properties of your Hive, such as its growth rate, stability, and internal forces. By connecting to live data sources like Git, Prometheus, and Kubernetes, it provides real-time insights into the health and architecture of your deployed systems.
+
+### Key Resources
+
+- **[Developer's Guide](../hive_physics/README.md)**: Learn how to install and use the `hive-physics` library.
+-   **[Physical Constants Review](hive_preprint_part5_physical_constants_review.md)**: Read the full analysis and design document for the Hive's physical constants.
+-   **[DNA-Matched Metrics Specification](dna_matched_metrics_spec.md)**: Learn how to instrument your Hive components to be compatible with the physics library.
