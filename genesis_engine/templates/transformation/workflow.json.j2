@@ -1,0 +1,30 @@
+{
+    "sample_workflows": {
+        "{{ component_name }}_processing": {
+            "description": "A standard workflow for the {{ component_name }} transformation.",
+            "steps": [
+                {
+                    "primitive": "EventSource",
+                    "valency": [
+                        0,
+                        1
+                    ]
+                },
+                {
+                    "primitive": "{{ component_name_pascal_case }}",
+                    "valency": [
+                        1,
+                        1
+                    ]
+                },
+                {
+                    "primitive": "CommandSink",
+                    "valency": [
+                        1,
+                        0
+                    ]
+                }
+            ]
+        }
+    }
+}

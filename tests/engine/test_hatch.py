@@ -34,7 +34,8 @@ def test_hatch_aggregate():
             'commands.py',
             'events.py',
             'tests/__init__.py',
-            'tests/test_aggregate.py'
+            'tests/test_aggregate.py',
+            'workflow.json'
         ]
         for f in expected_files:
             file_path = os.path.join(output_path, f)
@@ -62,6 +63,13 @@ def test_hatch_aggregate():
             assert metadata['type'] == 'aggregate'
             assert metadata['name'] == component_name
             assert metadata['domain'] == domain
+
+        # 5. Check the workflow file
+        workflow_path = os.path.join(output_path, 'workflow.json')
+        assert os.path.exists(workflow_path)
+        with open(workflow_path, 'r') as f:
+            workflow_data = json.load(f)
+            assert f'{component_name}_creation' in workflow_data['sample_workflows']
 
     finally:
         # Clean up created files
@@ -97,7 +105,8 @@ def test_hatch_transformation():
             '__init__.py',
             'transformation.py',
             'tests/__init__.py',
-            'tests/test_transformation.py'
+            'tests/test_transformation.py',
+            'workflow.json'
         ]
         for f in expected_files:
             file_path = os.path.join(output_path, f)
@@ -116,6 +125,13 @@ def test_hatch_transformation():
             assert metadata['type'] == 'transformation'
             assert metadata['name'] == component_name
             assert metadata['domain'] == domain
+
+        # 4. Check the workflow file
+        workflow_path = os.path.join(output_path, 'workflow.json')
+        assert os.path.exists(workflow_path)
+        with open(workflow_path, 'r') as f:
+            workflow_data = json.load(f)
+            assert f'{component_name}_processing' in workflow_data['sample_workflows']
 
     finally:
         # Clean up created files

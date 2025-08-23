@@ -1,6 +1,7 @@
 import click
 from .hatch import hatch_component
 from .listing import list_components
+from .validation import validate_component
 
 @click.group()
 def genesis():
@@ -17,6 +18,15 @@ def genesis():
 def list_cmd(component_type, domain):
     """Lists all components in the Hive."""
     list_components(component_type, domain)
+
+
+@genesis.command('validate')
+@click.argument('target', type=click.Path(exists=True, file_okay=False, dir_okay=True, readable=True))
+@click.option('--rules', default='valency', help='The ruleset to apply (default: valency).')
+def validate_cmd(target, rules):
+    """Validates a component against a set of Hive Physics rules."""
+    click.echo(f"Validating component at '{target}' using ruleset '{rules}'...")
+    validate_component(target, rules)
 
 
 @genesis.group()

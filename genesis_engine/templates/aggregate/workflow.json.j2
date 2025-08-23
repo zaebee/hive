@@ -1,0 +1,30 @@
+{
+    "sample_workflows": {
+        "{{ component_name }}_creation": {
+            "description": "A standard workflow for creating a {{ component_name }} aggregate.",
+            "steps": [
+                {
+                    "primitive": "CommandHandler",
+                    "valency": [
+                        1,
+                        1
+                    ]
+                },
+                {
+                    "primitive": "{{ component_name_pascal_case }}",
+                    "valency": [
+                        1,
+                        1
+                    ]
+                },
+                {
+                    "primitive": "EventBus",
+                    "valency": [
+                        1,
+                        1
+                    ]
+                }
+            ]
+        }
+    }
+}
