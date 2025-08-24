@@ -41,7 +41,6 @@ class CognitiveAggregate(SacredAggregate):
     The aggregate responsible for self-reflection and proposing changes.
     """
     def _get_llm_suggestion(self, prompt: str, config: LLMConfig) -> str:
-        # ... (implementation from before)
         if not config.model:
             raise ValueError("LLM 'model' not specified in configuration.")
         messages = [{"role": "user", "content": prompt}]
@@ -55,37 +54,54 @@ class CognitiveAggregate(SacredAggregate):
         return content.strip() if content else ""
 
     def _generate_state_report(self, component_id: str, problem_description: str) -> str:
-        # ... (implementation from before)
         try:
             with open(component_id, 'r') as f:
                 source_code = f.read()
         except FileNotFoundError:
             source_code = f"# Error: Source code file not found at {component_id}"
+
         return f"""
 # MISTRAL AGENT STATE REPORT
+
 ## MISSION: AI-Powered Refactoring (Guided Evolution)
-...
+
+An issue has been detected in the Hive. Your task is to analyze the following context and propose a code modification to resolve the issue. The output should be a code block in the git merge-diff format (`<<<<<<< SEARCH`, `=======`, `>>>>>>> REPLACE`).
+
+---
+
+## 1. PROBLEM DESCRIPTION
+
+{problem_description}
+
+---
+
+## 2. TARGET COMPONENT
+
+- **Component ID:** `{component_id}`
+- **Source Code Path:** `{component_id}`
+
+```python
+{source_code}
+```
+
+---
+
+## 4. TASK
+
+Based on all the provided context, generate a code patch in the git merge-diff format to resolve the stated problem.
 """.strip()
 
     def _execute_immune_logic(self, command: ThinkCommand, llm_config: LLMConfig) -> List[EvolutionaryPulse]:
-        """
-        The main logic for the CognitiveAggregate. It senses, thinks, and
-        proposes a change.
-        """
         print(f"CognitiveAggregate received ThinkCommand for target: {command.target_component_id}")
 
-        # 1. Sense
         print("Generating state report...")
         report = self._generate_state_report(
             component_id=command.target_component_id,
             problem_description=command.problem_description
         )
 
-        # 2. Think
         print("Getting LLM suggestion...")
-        # In a real scenario, you'd get the llm_config from a config service
         patch_suggestion = self._get_llm_suggestion(report, llm_config)
 
-        # 3. Propose (by emitting an event)
         print("Emitting EvolutionaryPulse...")
         return [EvolutionaryPulse(patch=patch_suggestion)]
