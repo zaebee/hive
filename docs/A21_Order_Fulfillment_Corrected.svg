@@ -54,36 +54,81 @@
       .label { text-anchor: middle; fill: #212f3d; font-weight: bold; font-size:12px; }
       .title { text-anchor: middle; fill: #ecf0f1; font-size:24px; font-weight:bold; }
       .cluster-label { text-anchor: middle; font-size: 18px; font-weight: bold; fill: #ecf0f1; opacity: 0.7; }
+      .atom:hover { cursor: pointer; transform: scale(1.05); transition: transform 0.2s; }
     </style>
+
+    <script type="application/ecmascript">
+      <![CDATA[
+        const tooltip = {
+          element: null,
+          title: null,
+          body: null,
+          init: function() {
+            this.element = document.getElementById('atom-tooltip');
+            this.title = document.getElementById('tooltip-title');
+            this.body = document.getElementById('tooltip-body');
+            document.documentElement.addEventListener('click', () => this.hide(), false);
+          },
+          show: function(evt, title, body) {
+            evt.stopPropagation();
+            const CTM = evt.currentTarget.getScreenCTM();
+            const x = window.pageXOffset + CTM.e + 50;
+            const y = window.pageYOffset + CTM.f - 140;
+
+            this.title.textContent = 'Атом: ' + title;
+            this.body.innerHTML = body.replace(/\n/g, '<br/>');
+
+            this.element.setAttribute('transform', `translate(${x}, ${y})`);
+            this.element.setAttribute('visibility', 'visible');
+          },
+          hide: function() {
+            if (this.element) {
+              this.element.setAttribute('visibility', 'hidden');
+            }
+          }
+        };
+        window.addEventListener('load', () => tooltip.init());
+      ]]>
+    </script>
   </defs>
 
   <!-- Background -->
   <rect width="1400" height="1000" class="background"/>
 
   <!-- Title -->
-  <text x="700" y="50" class="title">🧪 Order Fulfillment Molecule (Corrected Structure)</text>
+  <text x="700" y="50" class="title">🧪 Order Fulfillment Molecule (Interactive)</text>
 
   <!-- === ORDER CLUSTER === -->
   <g id="order-cluster">
     <text x="250" y="100" class="cluster-label">1. Order Domain</text>
 
     <!-- Cores (Aggregates) -->
-    <circle cx="250" cy="200" r="40" class="core-order"/>
-    <text x="250" y="205" class="label">Cart</text>
+    <g class="atom" onclick="tooltip.show(evt, 'Cart (Core)', 'Internal Codon: C→A→G\n\n- C (Connector): CartAPI_Handler\n- A (Aggregate): CartAggregate\n- G (Genesis Event): CartCheckedOutEvent')">
+      <circle cx="250" cy="200" r="40" class="core-order"/>
+      <text x="250" y="205" class="label">Cart</text>
+    </g>
 
-    <circle cx="250" cy="350" r="40" class="core-order"/>
-    <text x="250" y="355" class="label">Payment</text>
+    <g class="atom" onclick="tooltip.show(evt, 'Payment (Core)', 'Internal Codon: G→A→C\n\n- G (Event): CartCheckedOutEvent\n- A (Aggregate): PaymentAggregate\n- C (Connector): Triggers PaymentGW Adapter')">
+      <circle cx="250" cy="350" r="40" class="core-order"/>
+      <text x="250" y="355" class="label">Payment</text>
+    </g>
 
-    <circle cx="400" cy="275" r="40" class="core-order"/>
-    <text x="400" y="280" class="label">Inventory</text>
+    <g class="atom" onclick="tooltip.show(evt, 'Inventory (Core)', 'Internal Codon: A\n\n- A (Aggregate): InventoryAggregate\n- Function: Responds to checks from other cores.')">
+      <circle cx="400" cy="275" r="40" class="core-order"/>
+      <text x="400" y="280" class="label">Inventory</text>
+    </g>
 
     <!-- Adapters -->
-    <circle cx="100" cy="500" r="30" class="adapter"/>
-    <text x="100" y="505" class="label">PaymentGW</text>
+    <g class="atom" onclick="tooltip.show(evt, 'PaymentGW (Adapter)', 'Internal Codon: C→T→C\n\n- C (Connector): ExternalGatewayConnector\n- T (Transform): PaymentDataTransformer\n- C (Connector): Internal Event Bus')">
+      <circle cx="100" cy="500" r="30" class="adapter"/>
+      <text x="100" y="505" class="label">PaymentGW</text>
+    </g>
 
     <!-- Externals -->
-    <circle cx="100" cy="150" r="35" class="external"/>
-    <text x="100" y="155" class="label">WebStore</text>
+    <g class="atom" onclick="tooltip.show(evt, 'WebStore (External)', 'External System.\nProvides user interactions that initiate the order process.')">
+      <circle cx="100" cy="150" r="35" class="external"/>
+      <text x="100" y="155" class="label">WebStore</text>
+    </g>
 
     <!-- Bonds -->
     <line x1="100" y1="185" x2="220" y2="190" class="strong-bond"/> <!-- WebStore -> Cart -->
@@ -95,4 +140,15 @@
     <line x1="440" y1="275" x2="550" y2="275" class="inter-cluster-bond"/>
   </g>
 
+  <!-- Tooltip for Atomic Details -->
+  <g id="atom-tooltip" visibility="hidden">
+    <rect x="0" y="0" width="260" height="130" rx="8" fill="rgba(255, 255, 255, 0.95)" stroke="#566573" stroke-width="1.5"/>
+    <text id="tooltip-title" x="130" y="25" text-anchor="middle" font-weight="bold" font-size="14px" fill="#2c3e50"></text>
+    <foreignObject x="10" y="40" width="240" height="75">
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <div id="tooltip-body" style="font-family:'Fira Code',monospace; font-size:11px; color:#34495e; white-space: pre-wrap;"></div>
+      </body>
+    </foreignObject>
+    <text x="130" y="120" text-anchor="middle" font-size="9px" fill="#7f8c8d">(click background to close)</text>
+  </g>
 </svg>
