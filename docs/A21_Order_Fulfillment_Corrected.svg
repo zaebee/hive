@@ -55,39 +55,49 @@
       .title { text-anchor: middle; fill: #ecf0f1; font-size:24px; font-weight:bold; }
       .cluster-label { text-anchor: middle; font-size: 18px; font-weight: bold; fill: #ecf0f1; opacity: 0.7; }
       .atom:hover { cursor: pointer; transform: scale(1.05); transition: transform 0.2s; }
+      .detail-view-bg { fill: rgba(248, 249, 249, 0.97); stroke: #aeb6bf; stroke-width: 1.5; }
+      .detail-title { text-anchor: middle; font-size: 16px; font-weight: bold; fill: #2c3e50; }
+      .detail-text { font-size: 11px; fill: #34495e; }
+      .detail-label { font-size: 12px; font-weight: bold; fill: #212f3d; }
     </style>
 
     <script type="application/ecmascript">
       <![CDATA[
-        const tooltip = {
-          element: null,
-          title: null,
-          body: null,
-          init: function() {
-            this.element = document.getElementById('atom-tooltip');
-            this.title = document.getElementById('tooltip-title');
-            this.body = document.getElementById('tooltip-body');
-            document.documentElement.addEventListener('click', () => this.hide(), false);
-          },
-          show: function(evt, title, body) {
-            evt.stopPropagation();
-            const CTM = evt.currentTarget.getScreenCTM();
-            const x = window.pageXOffset + CTM.e + 50;
-            const y = window.pageYOffset + CTM.f - 140;
+        function showSubatomicView(evt, data) {
+          evt.stopPropagation();
+          const detailView = document.getElementById('subatomic-detail-view');
+          const detailTitle = document.getElementById('detail-title');
+          const detailContent = document.getElementById('detail-content');
 
-            this.title.textContent = 'Атом: ' + title;
-            this.body.innerHTML = body.replace(/\n/g, '<br/>');
-
-            this.element.setAttribute('transform', `translate(${x}, ${y})`);
-            this.element.setAttribute('visibility', 'visible');
-          },
-          hide: function() {
-            if (this.element) {
-              this.element.setAttribute('visibility', 'hidden');
-            }
+          // Clear previous content
+          while (detailContent.firstChild) {
+            detailContent.removeChild(detailContent.firstChild);
           }
-        };
-        window.addEventListener('load', () => tooltip.init());
+
+          detailTitle.textContent = "Субатомная Структура: " + data.title;
+
+          // --- This is where the dynamic drawing logic will go ---
+          // For now, just display the text description
+          const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          textElement.setAttribute("x", 195);
+          textElement.setAttribute("y", 40);
+          textElement.setAttribute("text-anchor", "middle");
+          textElement.setAttribute("class", "detail-text");
+          textElement.textContent = "Codon: " + data.codon;
+          detailContent.appendChild(textElement);
+
+          detailView.setAttribute('visibility', 'visible');
+        }
+
+        function hideSubatomicView() {
+           const detailView = document.getElementById('subatomic-detail-view');
+           if(detailView) detailView.setAttribute('visibility', 'hidden');
+        }
+
+        window.addEventListener('load', () => {
+           const svgRoot = document.querySelector('svg');
+           if(svgRoot) svgRoot.addEventListener('click', hideSubatomicView, false);
+        });
       ]]>
     </script>
   </defs>
@@ -96,36 +106,36 @@
   <rect width="1400" height="1000" class="background"/>
 
   <!-- Title -->
-  <text x="700" y="50" class="title">🧪 Order Fulfillment Molecule (Interactive)</text>
+  <text x="700" y="50" class="title">🧪 Order Fulfillment Molecule (Interactive Detail View)</text>
 
   <!-- === ORDER CLUSTER === -->
   <g id="order-cluster">
     <text x="250" y="100" class="cluster-label">1. Order Domain</text>
 
     <!-- Cores (Aggregates) -->
-    <g class="atom" onclick="tooltip.show(evt, 'Cart (Core)', 'Internal Codon: C→A→G\n\n- C (Connector): CartAPI_Handler\n- A (Aggregate): CartAggregate\n- G (Genesis Event): CartCheckedOutEvent')">
+    <g class="atom" onclick='showSubatomicView(evt, {title: "Cart (Core)", codon: "C→A→G"})'>
       <circle cx="250" cy="200" r="40" class="core-order"/>
       <text x="250" y="205" class="label">Cart</text>
     </g>
 
-    <g class="atom" onclick="tooltip.show(evt, 'Payment (Core)', 'Internal Codon: G→A→C\n\n- G (Event): CartCheckedOutEvent\n- A (Aggregate): PaymentAggregate\n- C (Connector): Triggers PaymentGW Adapter')">
+    <g class="atom" onclick='showSubatomicView(evt, {title: "Payment (Core)", codon: "G→A→C"})'>
       <circle cx="250" cy="350" r="40" class="core-order"/>
       <text x="250" y="355" class="label">Payment</text>
     </g>
 
-    <g class="atom" onclick="tooltip.show(evt, 'Inventory (Core)', 'Internal Codon: A\n\n- A (Aggregate): InventoryAggregate\n- Function: Responds to checks from other cores.')">
+    <g class="atom" onclick='showSubatomicView(evt, {title: "Inventory (Core)", codon: "A"})'>
       <circle cx="400" cy="275" r="40" class="core-order"/>
       <text x="400" y="280" class="label">Inventory</text>
     </g>
 
     <!-- Adapters -->
-    <g class="atom" onclick="tooltip.show(evt, 'PaymentGW (Adapter)', 'Internal Codon: C→T→C\n\n- C (Connector): ExternalGatewayConnector\n- T (Transform): PaymentDataTransformer\n- C (Connector): Internal Event Bus')">
+    <g class="atom" onclick='showSubatomicView(evt, {title: "PaymentGW (Adapter)", codon: "C→T→C"})'>
       <circle cx="100" cy="500" r="30" class="adapter"/>
       <text x="100" y="505" class="label">PaymentGW</text>
     </g>
 
     <!-- Externals -->
-    <g class="atom" onclick="tooltip.show(evt, 'WebStore (External)', 'External System.\nProvides user interactions that initiate the order process.')">
+    <g class="atom" onclick='showSubatomicView(evt, {title: "WebStore (External)", codon: "N/A"})'>
       <circle cx="100" cy="150" r="35" class="external"/>
       <text x="100" y="155" class="label">WebStore</text>
     </g>
@@ -140,15 +150,14 @@
     <line x1="440" y1="275" x2="550" y2="275" class="inter-cluster-bond"/>
   </g>
 
-  <!-- Tooltip for Atomic Details -->
-  <g id="atom-tooltip" visibility="hidden">
-    <rect x="0" y="0" width="260" height="130" rx="8" fill="rgba(255, 255, 255, 0.95)" stroke="#566573" stroke-width="1.5"/>
-    <text id="tooltip-title" x="130" y="25" text-anchor="middle" font-weight="bold" font-size="14px" fill="#2c3e50"></text>
-    <foreignObject x="10" y="40" width="240" height="75">
-      <body xmlns="http://www.w3.org/1999/xhtml">
-        <div id="tooltip-body" style="font-family:'Fira Code',monospace; font-size:11px; color:#34495e; white-space: pre-wrap;"></div>
-      </body>
-    </foreignObject>
-    <text x="130" y="120" text-anchor="middle" font-size="9px" fill="#7f8c8d">(click background to close)</text>
+  <!-- Subatomic Detail View (Initially Hidden) -->
+  <g id="subatomic-detail-view" visibility="hidden" onclick="event.stopPropagation()">
+    <rect x="950" y="100" width="380" height="500" rx="10" class="detail-view-bg"/>
+    <text id="detail-title" x="1140" y="140" class="detail-title"></text>
+
+    <!-- Content of this group will be drawn by JavaScript -->
+    <g id="detail-content" transform="translate(960, 180)"></g>
+
+    <text x="1140" y="580" text-anchor="middle" font-size="10px" fill="#7f8c8d">(кликните фон для закрытия)</text>
   </g>
 </svg>
