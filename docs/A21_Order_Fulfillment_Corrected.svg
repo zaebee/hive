@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1400" height="1000" xmlns="http://www.w3.org/2000/svg" font-family="'Fira Code', monospace" font-size="12">
+  <defs>
+    <!-- State Gradients -->
+    <radialGradient id="orderGradient" cx="0.5" cy="0.35">
+      <stop offset="0%" style="stop-color:#fff7e6"/>
+      <stop offset="100%" style="stop-color:#f39c12"/>
+    </radialGradient>
+    <radialGradient id="fulfillmentGradient" cx="0.5" cy="0.35">
+      <stop offset="0%" style="stop-color:#eaf2f8"/>
+      <stop offset="100%" style="stop-color:#3498db"/>
+    </radialGradient>
+    <radialGradient id="shippingGradient" cx="0.5" cy="0.35">
+      <stop offset="0%" style="stop-color:#e8f5e9"/>
+      <stop offset="100%" style="stop-color:#2ecc71"/>
+    </radialGradient>
+    <radialGradient id="adapterGradient" cx="0.5" cy="0.3">
+      <stop offset="0%" style="stop-color:#e5e7e9"/>
+      <stop offset="100%" style="stop-color:#808b96"/>
+    </radialGradient>
+    <radialGradient id="externalGradient" cx="0.5" cy="0.3">
+      <stop offset="0%" style="stop-color:#f2f3f4"/>
+      <stop offset="100%" style="stop-color:#b3b6b7"/>
+    </radialGradient>
+    <radialGradient id="toxicGradient" cx="0.5" cy="0.3">
+      <stop offset="0%" style="stop-color:#fadbd8"/>
+      <stop offset="100%" style="stop-color:#e74c3c"/>
+    </radialGradient>
+    <linearGradient id="bgGradient" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2c3e50"/>
+      <stop offset="100%" stop-color="#34495e"/>
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="3" dy="3" stdDeviation="4" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
+
+    <!-- Styles -->
+    <style>
+      .background { fill: url(#bgGradient); }
+      .core-order { fill: url(#orderGradient); stroke:#c07210; }
+      .core-fulfillment { fill: url(#fulfillmentGradient); stroke:#2874a6; }
+      .core-shipping { fill: url(#shippingGradient); stroke:#239b56; }
+      .adapter { fill: url(#adapterGradient); stroke:#5d6d7e; }
+      .toxic { fill: url(#toxicGradient); stroke:#c0392b; }
+      .external { fill: url(#externalGradient); stroke:#7b7d7d; }
+      .core-order, .core-fulfillment, .core-shipping, .adapter, .toxic, .external { stroke-width:2; filter: url(#shadow); }
+
+      .bond { stroke: #ecf0f1; stroke-width:2; stroke-linecap: round; opacity:0.8; }
+      .strong-bond { stroke: #fdebd0; stroke-width:4; stroke-linecap: round; opacity:1; }
+      .inter-cluster-bond { stroke: #d4a017; stroke-width:6; stroke-dasharray: 10, 5; }
+
+      .label { text-anchor: middle; fill: #212f3d; font-weight: bold; font-size:12px; }
+      .title { text-anchor: middle; fill: #ecf0f1; font-size:24px; font-weight:bold; }
+      .cluster-label { text-anchor: middle; font-size: 18px; font-weight: bold; fill: #ecf0f1; opacity: 0.7; }
+      .atom:hover { cursor: pointer; transform: scale(1.05); transition: transform 0.2s; }
+      .detail-view-bg { fill: rgba(248, 249, 249, 0.97); stroke: #aeb6bf; stroke-width: 1.5; }
+      .detail-title { text-anchor: middle; font-size: 16px; font-weight: bold; fill: #2c3e50; }
+      .detail-text { font-size: 11px; fill: #34495e; }
+      .detail-label { font-size: 12px; font-weight: bold; fill: #212f3d; }
+    </style>
+
+    <script type="application/ecmascript">
+      <![CDATA[
+        function showSubatomicView(evt, data) {
+          evt.stopPropagation();
+          const detailView = document.getElementById('subatomic-detail-view');
+          const detailTitle = document.getElementById('detail-title');
+          const detailContent = document.getElementById('detail-content');
+
+          // Clear previous content
+          while (detailContent.firstChild) {
+            detailContent.removeChild(detailContent.firstChild);
+          }
+
+          detailTitle.textContent = "Субатомная Структура: " + data.title;
+
+          // --- This is where the dynamic drawing logic will go ---
+          // For now, just display the text description
+          const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          textElement.setAttribute("x", 195);
+          textElement.setAttribute("y", 40);
+          textElement.setAttribute("text-anchor", "middle");
+          textElement.setAttribute("class", "detail-text");
+          textElement.textContent = "Codon: " + data.codon;
+          detailContent.appendChild(textElement);
+
+          detailView.setAttribute('visibility', 'visible');
+        }
+
+        function hideSubatomicView() {
+           const detailView = document.getElementById('subatomic-detail-view');
+           if(detailView) detailView.setAttribute('visibility', 'hidden');
+        }
+
+        window.addEventListener('load', () => {
+           const svgRoot = document.querySelector('svg');
+           if(svgRoot) svgRoot.addEventListener('click', hideSubatomicView, false);
+        });
+      ]]>
+    </script>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="1000" class="background"/>
+
+  <!-- Title -->
+  <text x="700" y="50" class="title">🧪 Order Fulfillment Molecule (Interactive Detail View)</text>
+
+  <!-- === ORDER CLUSTER === -->
+  <g id="order-cluster">
+    <text x="250" y="100" class="cluster-label">1. Order Domain</text>
+
+    <!-- Cores (Aggregates) -->
+    <g class="atom" onclick='showSubatomicView(evt, {title: "Cart (Core)", codon: "C→A→G"})'>
+      <circle cx="250" cy="200" r="40" class="core-order"/>
+      <text x="250" y="205" class="label">Cart</text>
+    </g>
+
+    <g class="atom" onclick='showSubatomicView(evt, {title: "Payment (Core)", codon: "G→A→C"})'>
+      <circle cx="250" cy="350" r="40" class="core-order"/>
+      <text x="250" y="355" class="label">Payment</text>
+    </g>
+
+    <g class="atom" onclick='showSubatomicView(evt, {title: "Inventory (Core)", codon: "A"})'>
+      <circle cx="400" cy="275" r="40" class="core-order"/>
+      <text x="400" y="280" class="label">Inventory</text>
+    </g>
+
+    <!-- Adapters -->
+    <g class="atom" onclick='showSubatomicView(evt, {title: "PaymentGW (Adapter)", codon: "C→T→C"})'>
+      <circle cx="100" cy="500" r="30" class="adapter"/>
+      <text x="100" y="505" class="label">PaymentGW</text>
+    </g>
+
+    <!-- Externals -->
+    <g class="atom" onclick='showSubatomicView(evt, {title: "WebStore (External)", codon: "N/A"})'>
+      <circle cx="100" cy="150" r="35" class="external"/>
+      <text x="100" y="155" class="label">WebStore</text>
+    </g>
+
+    <!-- Bonds -->
+    <line x1="100" y1="185" x2="220" y2="190" class="strong-bond"/> <!-- WebStore -> Cart -->
+    <line x1="250" y1="240" x2="250" y2="310" class="bond"/> <!-- Cart -> Payment -->
+    <line x1="280" y1="215" x2="365" y2="260" class="bond"/> <!-- Cart -> Inventory -->
+    <line x1="220" y1="365" x2="125" y2="480" class="strong-bond"/> <!-- Payment -> PaymentGW -->
+
+    <!-- Inter-cluster bond placeholder -->
+    <line x1="440" y1="275" x2="550" y2="275" class="inter-cluster-bond"/>
+  </g>
+
+  <!-- Subatomic Detail View (Initially Hidden) -->
+  <g id="subatomic-detail-view" visibility="hidden" onclick="event.stopPropagation()">
+    <rect x="950" y="100" width="380" height="500" rx="10" class="detail-view-bg"/>
+    <text id="detail-title" x="1140" y="140" class="detail-title"></text>
+
+    <!-- Content of this group will be drawn by JavaScript -->
+    <g id="detail-content" transform="translate(960, 180)"></g>
+
+    <text x="1140" y="580" text-anchor="middle" font-size="10px" fill="#7f8c8d">(кликните фон для закрытия)</text>
+  </g>
+</svg>

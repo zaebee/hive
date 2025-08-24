@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="720" xmlns="http://www.w3.org/2000/svg" font-family="'Fira Code', monospace" font-size="12" role="img" aria-label="Internet Banking Molecule based on C4 Model">
+  <defs>
+    <!-- "Space-filling" Style Definitions -->
+    <radialGradient id="coreFill" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" style="stop-color:rgb(255,240,200)" />
+      <stop offset="100%" style="stop-color:rgb(243,156,18)" />
+    </radialGradient>
+    <radialGradient id="adapterFill" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" style="stop-color:rgb(200,230,255)" />
+      <stop offset="100%" style="stop-color:rgb(46,134,193)" />
+    </radialGradient>
+    <radialGradient id="externalFill" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" style="stop-color:rgb(200,255,220)" />
+      <stop offset="100%" style="stop-color:rgb(40,180,99)" />
+    </radialGradient>
+    <linearGradient id="bgGradient" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#d6eaf8"></stop>
+      <stop offset="100%" stop-color="#eaf2f8"></stop>
+    </linearGradient>
+
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="8" dy="8" stdDeviation="10" flood-color="rgba(0,0,0,0.15)"></feDropShadow>
+    </filter>
+
+    <style>
+      .background { fill: url(#bgGradient); }
+      .core { fill: url(#coreFill); }
+      .adapter { fill: url(#adapterFill); }
+      .external { fill: url(#externalFill); }
+      .label { text-anchor: middle; fill: #17202a; font-weight: bold; font-size:13px; }
+      .core-label { text-anchor: middle; fill: #6e2c00; font-weight: bold; font-size:16px; }
+      .title { text-anchor: middle; fill: #2c3e50; font-size:22px; font-weight:bold; }
+      .formula { text-anchor: middle; fill: #1f4e79; font-size:18px; font-weight:bold; }
+      .stats { fill: #34495e; font-size:12px; }
+      .small { font-size:11px; fill:#17202a; }
+      .legend { fill: rgba(255,255,255,0.7); stroke:#bdc3c7; stroke-width:1; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="920" class="background"></rect>
+
+  <!-- Title -->
+  <text x="600" y="45" class="title">🧪 Internet Banking - Space-Filling Model</text>
+  <text x="600" y="70" class="formula">AC₃</text>
+
+  <!-- Atoms -->
+  <g filter="url(#shadow)">
+    <!-- External Person -->
+    <g transform="translate(250, 320)">
+      <circle cx="0" cy="0" r="90" class="external" />
+      <text x="0" y="-5" class="label">Banking Customer</text>
+      <text x="0" y="15" class="small">(Person)</text>
+    </g>
+
+    <!-- Web Application -->
+    <g transform="translate(450, 450)">
+      <circle cx="0" cy="0" r="110" class="adapter" />
+      <text x="0" y="-10" class="label">Web Application</text>
+      <text x="0" y="10" class="small">(Java, Spring MVC)</text>
+      <text x="0" y="25" class="small">[Connector]</text>
+    </g>
+
+    <!-- Mobile App -->
+    <g transform="translate(680, 500)">
+      <circle cx="0" cy="0" r="100" class="adapter" />
+      <text x="0" y="-10" class="label">Mobile App</text>
+      <text x="0" y="10" class="small">(Kotlin, Android)</text>
+      <text x="0" y="25" class="small">[Connector]</text>
+    </g>
+
+    <!-- Single-Page App -->
+    <g transform="translate(700, 280)">
+      <circle cx="0" cy="0" r="120" class="adapter" />
+      <text x="0" y="-10" class="label">Single-Page App</text>
+      <text x="0" y="10" class="small">(JS, Angular)</text>
+      <text x="0" y="25" class="small">[Connector]</text>
+    </g>
+
+    <!-- Core Nucleus (Aggregate) -->
+    <g transform="translate(480, 250)">
+      <circle cx="0" cy="0" r="150" class="core" />
+      <text x="0" y="-15" class="core-label">API Application</text>
+      <text x="0" y="10" class="small">(Java, Spring Boot)</text>
+      <text x="0" y="28" class="small">[Aggregate]</text>
+    </g>
+  </g>
+
+  <!-- Legend and Stats -->
+  <rect x="20" y="600" width="300" height="130" class="legend" rx="10"></rect>
+  <text x="40" y="620" class="stats" font-weight="bold">🔬 Molecular Analysis</text>
+  <text x="40" y="640" class="stats">Formula: AC₃</text>
+  <text x="40" y="655" class="stats">Style: Space-Filling</text>
+  <text x="40" y="670" class="stats">Complexity (Mass): 480 amu</text>
+  <text x="40" y="685" class="stats">Atoms: 4 (1 core + 3 adapters)</text>
+  <text x="40" y="700" class="stats">Primary Interaction: Surface Area</text>
+
+</svg>
