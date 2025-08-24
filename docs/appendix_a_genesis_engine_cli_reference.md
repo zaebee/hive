@@ -11,13 +11,14 @@
 2. [Installation](#installation) 
 3. [Core Commands](#core-commands)
 4. [Component Management](#component-management)
-5. [Validation Commands](#validation-commands)
-6. [Analysis Tools](#analysis-tools)
-7. [Project Management](#project-management)
-8. [Configuration](#configuration)
-9. [Advanced Commands](#advanced-commands)
-10. [Troubleshooting](#troubleshooting)
-11. [Command Reference Index](#command-reference-index)
+5. [Evolution Commands](#evolution-commands)
+6. [Validation Commands](#validation-commands)
+7. [Analysis Tools](#analysis-tools)
+8. [Project Management](#project-management)
+9. [Configuration](#configuration)
+10. [Advanced Commands](#advanced-commands)
+11. [Troubleshooting](#troubleshooting)
+12. [Command Reference Index](#command-reference-index)
 
 ---
 
@@ -331,6 +332,46 @@ genesis clone aggregate Order -> ProductOrder \
 genesis clone connector PaymentGateway -> StripeConnector \
   --update-config \
   --preserve-pattern
+```
+
+---
+
+## Evolution Commands
+
+### `genesis think about`
+
+Asks the Hive's Cognitive Core to think about a problem and propose a solution.
+
+**Syntax:**
+```bash
+genesis think about --problem "<description>" --target <file_path> [options]
+```
+
+**Options:**
+- `--problem "<description>"`: A natural language description of the problem.
+- `--target <file_path>`: The path to the component file to be analyzed.
+- `--model <model_name>`: The LLM model to use (e.g., `mistral/mistral-small-latest`).
+
+**Example:**
+```bash
+# Ask the agent to refactor a component
+genesis think about \
+  --problem "Refactor this function to be more pythonic" \
+  --target "hive_physics/adaptation/patcher.py"
+```
+
+### `genesis evolve patch`
+
+Applies a patch to the Hive from a file and measures its impact.
+
+**Syntax:**
+```bash
+genesis evolve patch --file <patch_file_path>
+```
+
+**Example:**
+```bash
+genesis evolve patch --file my_patch.patch
 ```
 
 ---
@@ -805,6 +846,8 @@ genesis debug config --export=yaml
 | `init` | Create new hive project | `genesis init my-hive` |
 | `hatch` | Create components | `genesis hatch aggregate Order` |
 | `validate` | Check compliance | `genesis validate --all` |
+| `evolve` | Evolve the Hive | `genesis evolve patch --file ...` |
+| `think` | Trigger Cognitive Core | `genesis think about --problem ...` |
 | `analyze` | Deep analysis | `genesis analyze complexity` |
 | `list` | Show components | `genesis list --type=aggregate` |
 | `status` | Project health | `genesis status --detailed` |
@@ -829,7 +872,10 @@ genesis debug config --export=yaml
 - `init`, `hatch`, `generate`, `clone`
 
 **Validation Commands:**
-- `validate`, `check`, `analyze`
+- `validate`, `check`
+
+**Evolution Commands:**
+- `evolve`, `think`
 
 **Management Commands:**  
 - `list`, `status`, `config`, `remove`
@@ -838,7 +884,7 @@ genesis debug config --export=yaml
 - `deploy`, `rollback`, `migrate`
 
 **Analysis Commands:**
-- `graph`, `metrics`, `profile`, `benchmark`
+- `analyze`, `graph`, `metrics`, `profile`, `benchmark`
 
 **Utility Commands:**
 - `transform`, `debug`
