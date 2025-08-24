@@ -5,6 +5,7 @@ from .validation import validate_component
 from .analysis import analyze_component
 from .initialization import initialize_project
 from .graphing import generate_graph
+from .refactoring import transform_component
 
 @click.group()
 def genesis():
@@ -59,6 +60,14 @@ def graph_cmd(graph_type, output):
     """Generates a visual diagram of the Hive's architecture."""
     click.echo(f"Generating '{graph_type}' graph...")
     generate_graph(graph_type, output)
+
+
+@genesis.command('transform')
+@click.argument('target_file', type=click.Path(exists=True, dir_okay=False, readable=True))
+def transform_cmd(target_file):
+    """Refactors a source code file using an AI agent."""
+    click.echo(f"Initiating AI-powered transformation for '{target_file}'...")
+    transform_component(target_file)
 
 
 @genesis.group()
