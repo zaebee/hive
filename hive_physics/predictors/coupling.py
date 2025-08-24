@@ -69,6 +69,33 @@ class PredictorService:
 
         return bond_strengths
 
+
+def predict_bond_strength_for_pair(mock_file_path: str, c1_id: str, c2_id: str) -> float:
+    """
+    Predicts the bond strength (gravitational force) between two specific components.
+    This is a simplified version for direct CLI use, reading from a mock file.
+    """
+    with open(mock_file_path, 'r') as f:
+        data = json.load(f)
+
+    masses = {comp['id']: comp['mass'] for comp in data.get('components', [])}
+    graph = {comp['id']: comp['connections'] for comp in data.get('components', [])}
+
+    if c1_id not in masses or c2_id not in masses:
+        raise ValueError("One or both components not found in mock data.")
+
+    m1 = masses[c1_id]
+    m2 = masses[c2_id]
+    r = calculate_architectural_hops(graph, c1_id, c2_id)
+
+    if r == 0:
+        return float('inf')
+
+    G_hive = PhysicalConstants.G_HIVE
+    force = G_hive * (m1 * m2) / (r**2)
+    return force
+
+
 if __name__ == '__main__':
     import os
     from hive_physics.datasources.prometheus import PrometheusDataSource

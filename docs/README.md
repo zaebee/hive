@@ -150,6 +150,19 @@ Jump to the results that matter:
 
 ---
 
+### 🤖 The Beekeeper's Apprentice Path
+*For those who want to work with the autonomous agent*
+
+**Focus**: Using the Mistral Bee to evolve the Hive.
+- [ ] Read the [Mistral Bee Manual](mistral_bee_manual.md) - Understand the agent's capabilities.
+- [ ] Use `genesis think` to ask the Bee to propose a change.
+- [ ] Use `genesis evolve` to apply a patch and see its effect.
+
+**Time Investment**: 30 minutes
+**Outcome**: Ability to co-create with the Hive's AI agent.
+
+---
+
 ### 🔬 The Innovator's Path
 *For those pushing boundaries*
 
@@ -333,7 +346,7 @@ The Hive Architecture is a living system that grows through community collaborat
 
 The Hive Architecture continues to evolve:
 
-- **🤖 AI Beekeepers**: Automated system optimization
+- **🤖 AI Beekeepers**: Automated system optimization and self-healing, powered by the new **Mistral Bee** agent.
 - **🌌 Cosmic Hives**: Inter-organizational collaboration patterns  
 - **⚛️ Quantum Computing**: Next-generation processing paradigms
 - **🧬 Genetic Programming**: Self-evolving code structures
