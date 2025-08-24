@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="800" xmlns="http://www.w3.org/2000/svg" font-family="'Fira Code', monospace" font-size="12" role="img" aria-label="Allosteric Quantum Gateway Molecule">
+  <defs>
+    <!-- Gradients for Allosteric States -->
+    <radialGradient id="relaxedCore" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#abf7b1" />
+      <stop offset="100%" stop-color="#2ecc71" />
+    </radialGradient>
+    <radialGradient id="tenseCore" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#f5b7b1" />
+      <stop offset="100%" stop-color="#e74c3c" />
+    </radialGradient>
+
+    <!-- Gradient for Quantum Tunnel -->
+    <linearGradient id="tunnelGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8e44ad" stop-opacity="0.5" />
+      <stop offset="50%" stop-color="#f1c40f" stop-opacity="1" />
+      <stop offset="100%" stop-color="#8e44ad" stop-opacity="0.5" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="coreGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <filter id="quantumSubstrate" x="-50%" y="-50%" width="200%" height="200%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="3" result="noise" />
+      <feDiffuseLighting in="noise" lighting-color="#8e44ad" surfaceScale="2" result="light">
+        <feDistantLight azimuth="45" elevation="60" />
+      </feDiffuseLighting>
+      <feComposite in="SourceGraphic" in2="light" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" />
+      <feGaussianBlur stdDeviation="1.5" />
+    </filter>
+
+    <!-- Styles -->
+    <style>
+      .core { stroke: #2c3e50; stroke-width: 2; filter: url(#coreGlow); transition: fill 0.5s ease; }
+      .core-substrate { filter: url(#quantumSubstrate); opacity: 0.15; }
+      .relaxed { fill: url(#relaxedCore); }
+      .tense { fill: url(#tenseCore); }
+      .adapter { fill: #3498db; stroke: #1a5276; stroke-width: 2; }
+      .allosteric-bond { stroke: #34495e; stroke-width: 4; transition: stroke-width 0.5s ease; }
+      .quantum-tunnel { stroke: url(#tunnelGradient); stroke-width: 3; stroke-dasharray: 8, 4; animation: tunnel-flow 1s linear infinite, tunnel-flicker 0.2s linear infinite; }
+      .label { text-anchor: middle; fill: #2c3e50; font-weight: bold; }
+      .core-label { text-anchor: middle; fill: #17202a; font-weight: bold; font-size: 14px;}
+      .title { font-size: 22px; font-weight: bold; text-anchor: middle; }
+      .subtitle { font-size: 14px; text-anchor: middle; fill: #566573; }
+
+      @keyframes tunnel-flow {
+        from { stroke-dashoffset: 0; }
+        to { stroke-dashoffset: -12; }
+      }
+      @keyframes tunnel-flicker {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="800" fill="#f4f6f7" />
+
+  <!-- Title -->
+  <text x="500" y="40" class="title">🧬 Allosteric Quantum Gateway (AQ₃C₈)</text>
+  <text x="500" y="65" class="subtitle">A Hybrid Molecule for Adaptive, Multi-Level Load Management</text>
+
+  <!-- Core: 3 fused rings with Quantum Substrate -->
+  <g id="molecule-core" transform="translate(500, 300)">
+    <g class="core-substrate">
+        <ellipse cx="-70" cy="0" rx="60" ry="50" class="core tense" />
+        <ellipse cx="0" cy="0" rx="60" ry="50" class="core tense" />
+        <ellipse cx="70" cy="0" rx="60" ry="50" class="core tense" />
+    </g>
+    <g>
+        <ellipse cx="-70" cy="0" rx="60" ry="50" class="core tense" id="core1" />
+        <ellipse cx="0" cy="0" rx="60" ry="50" class="core tense" id="core2" />
+        <ellipse cx="70" cy="0" rx="60" ry="50" class="core tense" id="core3" />
+        <text x="-70" y="5" class="core-label">Gateway</text>
+        <text x="0" y="5" class="core-label">Rate Limiter</text>
+        <text x="70" y="5" class="core-label">WAF</text>
+    </g>
+    <text id="core-state-label" x="0" y="75" class="label" font-size="14" fill="#e74c3c">State: Tense (Low Affinity)</text>
+  </g>
+
+  <!-- Adapters (Connectors) -->
+  <g id="adapters">
+    <!-- Regular Service (Allosteric Bond) -->
+    <g transform="translate(200, 500)">
+      <line id="bond-regular" x1="0" y1="0" x2="220" y2="-150" class="allosteric-bond" />
+      <circle cx="0" cy="0" r="30" class="adapter" />
+      <text y="5" class="label">/catalog</text>
+    </g>
+
+    <!-- Critical Service (Quantum Tunnel Bond) -->
+    <g transform="translate(800, 500)">
+      <path id="bond-critical" d="M 0,0 Q -150,-100 -220,-150" class="quantum-tunnel" fill="none" />
+      <circle cx="0" cy="0" r="30" class="adapter" />
+      <text y="5" class="label">/trading</text>
+    </g>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(30, 30)">
+    <rect width="250" height="120" fill="rgba(255,255,255,0.8)" stroke="#bdc3c7" rx="5" />
+    <text x="125" y="25" class="label" font-size="14">🧪 Legend</text>
+    <circle cx="30" cy="50" r="10" class="core tense"/>
+    <text x="120" y="55" class="label">Core Atom (Tense State)</text>
+    <circle cx="30" cy="80" r="10" class="core relaxed"/>
+    <text x="125" y="85" class="label">Core Atom (Relaxed State)</text>
+    <line x1="15" y1="105" x2="45" y2="105" class="quantum-tunnel" stroke-dasharray="4,2"/>
+    <text x="135" y="110" class="label">Quantum Tunnel Bond</text>
+  </g>
+
+  <!-- Control & Animation Script -->
+  <script type="application/ecmascript">
+    <![CDATA[
+      const core1 = document.getElementById('core1');
+      const core2 = document.getElementById('core2');
+      const core3 = document.getElementById('core3');
+      const coreStateLabel = document.getElementById('core-state-label');
+      const criticalBond = document.getElementById('bond-critical');
+      const regularBond = document.getElementById('bond-regular');
+
+      let isRelaxed = false;
+
+      function toggleState() {
+        isRelaxed = !isRelaxed;
+
+        const stateClass = isRelaxed ? 'relaxed' : 'tense';
+        const labelText = isRelaxed ? 'State: Relaxed (High Affinity)' : 'State: Tense (Low Affinity)';
+        const labelColor = isRelaxed ? '#2ecc71' : '#e74c3c';
+
+        core1.setAttribute('class', 'core ' + stateClass);
+        core2.setAttribute('class', 'core ' + stateClass);
+        core3.setAttribute('class', 'core ' + stateClass);
+
+        coreStateLabel.textContent = labelText;
+        coreStateLabel.setAttribute('fill', labelColor);
+
+        // Modulate bond properties based on state
+        if (isRelaxed) {
+          regularBond.style.strokeWidth = '8';
+          criticalBond.style.animation = 'tunnel-flow 1s linear infinite, tunnel-flicker 0.1s linear infinite';
+          criticalBond.style.opacity = '1';
+        } else {
+          regularBond.style.strokeWidth = '4';
+          criticalBond.style.animation = 'tunnel-flow 2s linear infinite, tunnel-flicker 0.5s linear infinite';
+          criticalBond.style.opacity = '0.4';
+        }
+      }
+
+      // Simulate traffic changes every 3 seconds
+      setInterval(toggleState, 3000);
+    ]]>
+  </script>
+</svg>
