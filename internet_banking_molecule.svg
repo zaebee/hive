@@ -1,47 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="900" height="720" xmlns="http://www.w3.org/2000/svg" font-family="'Fira Code', monospace" font-size="12" role="img" aria-label="Internet Banking Molecule based on C4 Model">
   <defs>
-    <!-- "Ball-and-Stick" Style Definitions -->
-    <radialGradient id="coreSphere" cx="0.35" cy="0.35" r="0.6">
-      <stop offset="0%" style="stop-color:#fffde7" />
-      <stop offset="40%" style="stop-color:#f39c12" />
-      <stop offset="100%" style="stop-color:#8c5a01" />
+    <!-- "Space-filling" Style Definitions -->
+    <radialGradient id="coreFill" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" style="stop-color:rgb(255,240,200)" />
+      <stop offset="100%" style="stop-color:rgb(243,156,18)" />
     </radialGradient>
-    <radialGradient id="adapterSphere" cx="0.35" cy="0.35" r="0.6">
-      <stop offset="0%" style="stop-color:#eafbff" />
-      <stop offset="40%" style="stop-color:#5dade2" />
-      <stop offset="100%" style="stop-color:#1a4a6b" />
+    <radialGradient id="adapterFill" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" style="stop-color:rgb(200,230,255)" />
+      <stop offset="100%" style="stop-color:rgb(46,134,193)" />
     </radialGradient>
-    <radialGradient id="externalSphere" cx="0.35" cy="0.35" r="0.6">
-      <stop offset="0%" style="stop-color:#e8f8f5" />
-      <stop offset="40%" style="stop-color:#58d68d" />
-      <stop offset="100%" style="stop-color:#186a3b" />
+    <radialGradient id="externalFill" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+      <stop offset="0%" style="stop-color:rgb(200,255,220)" />
+      <stop offset="100%" style="stop-color:rgb(40,180,99)" />
     </radialGradient>
     <linearGradient id="bgGradient" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0%" stop-color="#f0f2f5"></stop>
-      <stop offset="100%" stop-color="#e6e9ed"></stop>
+      <stop offset="0%" stop-color="#d6eaf8"></stop>
+      <stop offset="100%" stop-color="#eaf2f8"></stop>
     </linearGradient>
 
     <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="5" dy="5" stdDeviation="6" flood-color="rgba(0,0,0,0.2)"></feDropShadow>
+      <feDropShadow dx="8" dy="8" stdDeviation="10" flood-color="rgba(0,0,0,0.15)"></feDropShadow>
     </filter>
 
     <style>
       .background { fill: url(#bgGradient); }
-      .core { fill: url(#coreSphere); stroke:#784d01; stroke-width:0.5; }
-      .adapter { fill: url(#adapterSphere); stroke:#153b52; stroke-width:0.5; }
-      .external { fill: url(#externalSphere); stroke:#145a32; stroke-width:0.5; }
-      .bond { stroke: #626567; stroke-width:12; stroke-linecap: round; opacity:1; }
-      .weak-bond { stroke: #99a3a4; stroke-width:6; stroke-linecap: round; opacity:1; }
-      .label { text-anchor: middle; fill: #fff; font-weight: bold; font-size:12px; paint-order: stroke; stroke: #000; stroke-width: 0.5px; }
-      .core-label { text-anchor: middle; fill: #fff; font-weight: bold; font-size:14px; paint-order: stroke; stroke: #000; stroke-width: 0.5px; }
+      .core { fill: url(#coreFill); }
+      .adapter { fill: url(#adapterFill); }
+      .external { fill: url(#externalFill); }
+      .label { text-anchor: middle; fill: #17202a; font-weight: bold; font-size:13px; }
+      .core-label { text-anchor: middle; fill: #6e2c00; font-weight: bold; font-size:16px; }
       .title { text-anchor: middle; fill: #2c3e50; font-size:22px; font-weight:bold; }
       .formula { text-anchor: middle; fill: #1f4e79; font-size:18px; font-weight:bold; }
       .stats { fill: #34495e; font-size:12px; }
-      .small { font-size:10px; fill:#fff; paint-order: stroke; stroke: #000; stroke-width: 0.5px; }
-      .legend { fill: rgba(255,255,255,0.8); stroke:#bdc3c7; stroke-width:1; }
-      .system-boundary { fill: none; stroke: rgba(46, 134, 193, 0.2); stroke-width:50; stroke-dasharray: 2, 2; }
-      .boundary-label { fill: #2e86c1; font-size: 16px; font-weight: bold; text-anchor: middle; opacity: 0.5; }
+      .small { font-size:11px; fill:#17202a; }
+      .legend { fill: rgba(255,255,255,0.7); stroke:#bdc3c7; stroke-width:1; }
     </style>
   </defs>
 
@@ -49,58 +42,58 @@
   <rect width="1200" height="920" class="background"></rect>
 
   <!-- Title -->
-  <text x="600" y="45" class="title">🧪 Internet Banking - Ball-and-Stick Model</text>
+  <text x="600" y="45" class="title">🧪 Internet Banking - Space-Filling Model</text>
   <text x="600" y="70" class="formula">AC₃</text>
 
-  <!-- System Boundary (visual guide, not a physical object) -->
-  <rect x="200" y="120" width="500" height="520" rx="20" class="system-boundary" />
-  <text x="450" y="100" class="boundary-label">Internet Banking System</text>
+  <!-- Atoms -->
+  <g filter="url(#shadow)">
+    <!-- External Person -->
+    <g transform="translate(250, 320)">
+      <circle cx="0" cy="0" r="90" class="external" />
+      <text x="0" y="-5" class="label">Banking Customer</text>
+      <text x="0" y="15" class="small">(Person)</text>
+    </g>
 
-  <!-- Bonds (drawn first to appear behind atoms) -->
-  <line x1="155" y1="300" x2="300" y2="500" class="weak-bond" />
-  <line x1="300" y1="500" x2="450" y2="300" class="bond" />
-  <line x1="600" y1="500" x2="450" y2="300" class="bond" />
-  <line x1="450" y1="550" x2="450" y2="300" class="bond" />
+    <!-- Web Application -->
+    <g transform="translate(450, 450)">
+      <circle cx="0" cy="0" r="110" class="adapter" />
+      <text x="0" y="-10" class="label">Web Application</text>
+      <text x="0" y="10" class="small">(Java, Spring MVC)</text>
+      <text x="0" y="25" class="small">[Connector]</text>
+    </g>
 
-  <!-- Atoms (drawn on top of bonds) -->
-  <!-- Core Nucleus (Aggregate) -->
-  <g transform="translate(450, 300)" filter="url(#shadow)">
-    <circle cx="0" cy="0" r="70" class="core" />
-    <text x="0" y="-5" class="core-label">API Application</text>
-    <text x="0" y="15" class="small">(Java, Spring Boot)</text>
-  </g>
+    <!-- Mobile App -->
+    <g transform="translate(680, 500)">
+      <circle cx="0" cy="0" r="100" class="adapter" />
+      <text x="0" y="-10" class="label">Mobile App</text>
+      <text x="0" y="10" class="small">(Kotlin, Android)</text>
+      <text x="0" y="25" class="small">[Connector]</text>
+    </g>
 
-  <!-- Orbiting Adapters (Connectors) -->
-  <g transform="translate(300, 500)" filter="url(#shadow)">
-    <circle cx="0" cy="0" r="50" class="adapter" />
-    <text x="0" y="-5" class="label">Web Application</text>
-    <text x="0" y="10" class="small">(Java, Spring MVC)</text>
-  </g>
-  <g transform="translate(600, 500)" filter="url(#shadow)">
-    <circle cx="0" cy="0" r="50" class="adapter" />
-    <text x="0" y="-5" class="label">Single-Page App</text>
-    <text x="0" y="10" class="small">(JS, Angular)</text>
-  </g>
-  <g transform="translate(450, 550)" filter="url(#shadow)">
-    <circle cx="0" cy="0" r="50" class="adapter" />
-    <text x="0" y="-5" class="label">Mobile App</text>
-    <text x="0" y="10" class="small">(Kotlin, Android)</text>
-  </g>
+    <!-- Single-Page App -->
+    <g transform="translate(700, 280)">
+      <circle cx="0" cy="0" r="120" class="adapter" />
+      <text x="0" y="-10" class="label">Single-Page App</text>
+      <text x="0" y="10" class="small">(JS, Angular)</text>
+      <text x="0" y="25" class="small">[Connector]</text>
+    </g>
 
-  <!-- External Person -->
-  <g transform="translate(100, 300)" filter="url(#shadow)">
-    <circle cx="0" cy="0" r="55" class="external" />
-    <text x="0" y="-5" class="label">Banking Customer</text>
-    <text x="0" y="10" class="small">(Person)</text>
+    <!-- Core Nucleus (Aggregate) -->
+    <g transform="translate(480, 250)">
+      <circle cx="0" cy="0" r="150" class="core" />
+      <text x="0" y="-15" class="core-label">API Application</text>
+      <text x="0" y="10" class="small">(Java, Spring Boot)</text>
+      <text x="0" y="28" class="small">[Aggregate]</text>
+    </g>
   </g>
 
   <!-- Legend and Stats -->
-  <rect x="750" y="120" width="300" height="130" class="legend" rx="10"></rect>
-  <text x="770" y="140" class="stats" font-weight="bold">🔬 Molecular Analysis</text>
-  <text x="770" y="160" class="stats">Formula: AC₃</text>
-  <text x="770" y="175" class="stats">Style: Ball-and-Stick</text>
-  <text x="770" y="190" class="stats">Stability: 88.5 / 100</text>
-  <text x="770" y="205" class="stats">Atoms: 4 (1 core + 3 adapters)</text>
-  <text x="770" y="220" class="stats">Bonds: 4</text>
+  <rect x="20" y="600" width="300" height="130" class="legend" rx="10"></rect>
+  <text x="40" y="620" class="stats" font-weight="bold">🔬 Molecular Analysis</text>
+  <text x="40" y="640" class="stats">Formula: AC₃</text>
+  <text x="40" y="655" class="stats">Style: Space-Filling</text>
+  <text x="40" y="670" class="stats">Complexity (Mass): 480 amu</text>
+  <text x="40" y="685" class="stats">Atoms: 4 (1 core + 3 adapters)</text>
+  <text x="40" y="700" class="stats">Primary Interaction: Surface Area</text>
 
 </svg>
