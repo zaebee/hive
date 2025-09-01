@@ -27,10 +27,19 @@ Welcome, brave builder, to the most comprehensive guide for creating living, bre
 
 ### 🎯 Why This Journey Matters
 
-- **🌱 Organic Growth**: Build systems that evolve naturally
-- **🔬 Scientific Foundation**: Based on proven biological patterns  
-- **⚡ Practical Magic**: Real tools, real code, real results
-- **🌍 Ecosystem Scale**: From single features to global platforms
+- **🌱 Organic Growth**: A methodology for building systems that can evolve naturally.
+- **🔬 Scientific Foundation**: An approach based on proven biological and chemical patterns.
+- **💭 Conceptual Framework**: A way of thinking about architecture, not a ready-made solution.
+- **🌍 Ecosystem Scale**: Concepts that apply from single features to global platforms.
+
+---
+
+## 🏛️ Структура этого репозитория
+
+Этот репозиторий содержит два ключевых компонента:
+
+1.  **`/docs`**: Основная документация, предназначенная для **людей**. Здесь вы найдете философию, паттерны и руководства по методологии Hive Architecture. Это лучшее место для начала, если вы хотите понять концепции.
+2.  **`protocol.md`**: Техническая спецификация (или "системный промпт"), предназначенная для **AI-агента "Садовник"**. Этот файл описывает правила, метрики и поведение, которым должен следовать автоматизированный агент при работе с кодовой базой, построенной по принципам Hive.
 
 ---
 
@@ -66,43 +75,21 @@ graph LR
 ```
 
 **Your Path:**
-1. **[Part I: The Enchanted Apiary](hive_preprint_part1_enchanted_apiary.md)** (15 min) - 🌸 Core philosophy & fairy tale foundation
-2. **[Part II: The Beekeeper's Grimoire](hive_preprint_part2_beekeeper_grimoire.md)** (20 min) - ⚔️ Technical implementation & Sacred Codons
-3. **[Part III: The Chemical Architecture](hive_preprint_part3_chemical_architecture.md)** (15 min) - 🧪 Advanced patterns & chemical bonds
-4. **[Part IV: Growing Your Hive](hive_preprint_part4_growing_your_hive.md)** (20 min) - 🌱 Practical scaling & implementation
+1. **[Part I: The Enchanted Apiary](docs/01_philosophy/hive_preprint_part1_enchanted_apiary.md)** (15 min) - 🌸 Core philosophy & fairy tale foundation
+2. **[Part II: The Beekeeper's Grimoire](docs/02_atcg_genome/hive_preprint_part2_beekeeper_grimoire.md)** (20 min) - ⚔️ Technical implementation & Sacred Codons
+3. **[Part III: The Chemical Architecture](docs/03_patterns/hive_preprint_part3_chemical_architecture.md)** (15 min) - 🧪 Advanced patterns & chemical bonds
+4. **[Part IV: Growing Your Hive](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md)** (20 min) - 🌱 Practical scaling & implementation
 
 ---
-
-### 🛠️ Implementation Track (2-4 hours)
-*"Show me the code and tools!"*
-
-For hands-on developers ready to build:
-
-```mermaid
-stateDiagram-v2
-    [*] --> Setup: Install Genesis Engine
-    Setup --> FirstAggregate: Create Your Queen
-    FirstAggregate --> Patterns: Learn Sacred Codons
-    Patterns --> Integration: Connect to Real World
-    Integration --> Evolution: Grow Your Colony
-    Evolution --> [*]: Living Hive System
-```
-
-**Your Toolkit:**
-- 🔧 **[Genesis Engine CLI](../genesis-engine/)** - Code scaffolding magic
-- 🍯 **[Royal Jelly SDK](../dna_core/royal_jelly/)** - Core framework
-- 🐝 **[Living Examples](../hive/components/)** - Real working hives
-- 🧬 **[Pollen Protocol](../dna_core/pollen_protocol.proto)** - Inter-hive communication
-
 ---
 
 ### 👔 Executive Summary (10 minutes)
 *"What's the business value and ROI?"*
 
 Jump to the results that matter:
-- **[Growth Framework Overview](hive_preprint_part4_growing_your_hive.md#success-metrics-and-kpis)** - KPIs and business metrics
-- **[Case Study: E-commerce Platform](hive_preprint_part4_growing_your_hive.md#real-world-ecosystem-case-study-global-e-commerce-platform)** - 3x productivity increase
-- **[Implementation Roadmap](hive_preprint_part4_growing_your_hive.md#implementation-roadmap-templates)** - 30/90/365 day plans
+- **[Growth Framework Overview](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#success-metrics-and-kpis)** - KPIs and business metrics
+- **[Case Study: E-commerce Platform](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#real-world-ecosystem-case-study-global-e-commerce-platform)** - 3x productivity increase
+- **[Implementation Roadmap](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#implementation-roadmap-templates)** - 30/90/365 day plans
 
 ---
 
@@ -112,27 +99,13 @@ Jump to the results that matter:
 *For system designers and technical architects*
 
 **Focus**: Philosophy, patterns, and large-scale design
-- [ ] Read [Part I: Enchanted Apiary](hive_preprint_part1_enchanted_apiary.md) - Understand the bio/sci philosophy
-- [ ] Study [Hexagonal to Hive mapping](hive_preprint_part1_enchanted_apiary.md#architectural-mapping-hexagonal-to-hive)
-- [ ] Master [Chemical Architecture](hive_preprint_part3_chemical_architecture.md) - Advanced system design
-- [ ] Plan with [Ecosystem Patterns](hive_preprint_part4_growing_your_hive.md#ecosystem-architecture-patterns)
+- [ ] Read [Part I: The Enchanted Apiary](docs/01_philosophy/hive_preprint_part1_enchanted_apiary.md) - Understand the bio/sci philosophy
+- [ ] Study [Hexagonal to Hive mapping](docs/01_philosophy/hive_preprint_part1_enchanted_apiary.md#architectural-mapping-hexagonal-to-hive)
+- [ ] Master [Chemical Architecture](docs/03_patterns/hive_preprint_part3_chemical_architecture.md) - Advanced system design
+- [ ] Plan with [Ecosystem Patterns](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#ecosystem-architecture-patterns)
 
 **Time Investment**: 60 minutes
 **Outcome**: Complete architectural understanding
-
----
-
-### 👨‍💻 The Developer's Path  
-*For hands-on implementers*
-
-**Focus**: Code, tools, and practical implementation
-- [ ] Quick scan [Sacred Codon Patterns](hive_preprint_part2_beekeeper_grimoire.md#the-sacred-codons-patterns-of-life)
-- [ ] Install [Genesis Engine](../genesis-engine/) and create first aggregate
-- [ ] Study [Working Examples](../hive/components/hello_hive/) 
-- [ ] Build following [30-Day Quick Start](hive_preprint_part4_growing_your_hive.md#30-day-quick-start)
-
-**Time Investment**: 2-4 hours
-**Outcome**: Working Hive implementation
 
 ---
 
@@ -140,10 +113,10 @@ Jump to the results that matter:
 *For engineering managers and team leads*
 
 **Focus**: Adoption, scaling, and team transformation  
-- [ ] Understand [Core Philosophy](hive_preprint_part1_enchanted_apiary.md) for team communication
-- [ ] Review [Implementation Strategies](hive_preprint_part4_growing_your_hive.md#phase-2-colony-building)
-- [ ] Study [Case Studies](hive_preprint_part4_growing_your_hive.md#colony-building-case-study-e-commerce-platform)
-- [ ] Plan [Team Training](hive_preprint_part4_growing_your_hive.md#step-2-team-training-and-standards)
+- [ ] Understand [Core Philosophy](docs/01_philosophy/hive_preprint_part1_enchanted_apiary.md) for team communication
+- [ ] Review [Implementation Strategies](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#phase-2-colony-building)
+- [ ] Study [Case Studies](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#colony-building-case-study-e-commerce-platform)
+- [ ] Plan [Team Training](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#step-2-team-training-and-standards)
 
 **Time Investment**: 45 minutes  
 **Outcome**: Team transformation roadmap
@@ -154,10 +127,10 @@ Jump to the results that matter:
 *For those pushing boundaries*
 
 **Focus**: Advanced patterns and future possibilities
-- [ ] Deep dive [Chemical Architecture](hive_preprint_part3_chemical_architecture.md)
-- [ ] Explore [Quantum Hive Patterns](hive_preprint_part4_growing_your_hive.md#quantum-hive-patterns) 
-- [ ] Study [Emergent Intelligence](hive_preprint_part4_growing_your_hive.md#emergent-intelligence)
-- [ ] Contribute to [Cosmic Hive Vision](hive_preprint_part4_growing_your_hive.md#future-evolution-the-cosmic-hive)
+- [ ] Deep dive [Chemical Architecture](docs/03_patterns/hive_preprint_part3_chemical_architecture.md)
+- [ ] Explore [Quantum Hive Patterns](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#quantum-hive-patterns)
+- [ ] Study [Emergent Intelligence](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#emergent-intelligence)
+- [ ] Contribute to [Cosmic Hive Vision](docs/04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md#future-evolution-the-cosmic-hive)
 
 **Time Investment**: 90 minutes
 **Outcome**: Next-generation architecture insights
@@ -202,39 +175,6 @@ graph TD
 ```
 
 ---
-
-## 🏗️ Live Implementation Examples
-
-### Working Hive Components in This Project
-
-Explore real, working examples of Hive Architecture:
-
-#### 🐝 [Hello Hive Component](../hive/components/hello_hive/)
-Your first complete Hive cell with all ATCG primitives:
-- **Aggregate**: `sacred_aggregate.py` - Bio/sci collaborative validation
-- **Transformation**: Pure domain calculations  
-- **Connector**: `connector.py` - External API integration
-- **Genesis Events**: `bio_sci_adaptation_demo.py` - Living event system
-
-#### 📦 [Order Management Component](../hive/components/create-order/)
-Production-ready e-commerce order handling:
-- **Command Processing**: C→A→G pattern implementation
-- **Event Sourcing**: Complete Genesis Event lifecycle
-- **Error Handling**: Sacred Codon validation
-
-#### 🔍 [Query Component](../hive/components/get-order-details/)
-Read-side optimization with C→T→C pattern:
-- **Data Transformation**: Pure query logic
-- **DTO Patterns**: Clean data transfer objects
-- **Performance**: Optimized read pathways
-
-### 🛠️ Genesis Engine Templates
-
-Pre-built scaffolding in [`../genesis-engine/templates/`](../genesis-engine/templates/):
-- **Aggregate Template**: `aggregate.py.tpl` - Sacred business logic structure
-- **Connector Template**: `connector.py.tpl` - External integration patterns
-- **Command Template**: `command.py.tpl` - Proper command handling
-
 ---
 
 ## 🎯 Learning Progress Tracker
@@ -288,42 +228,34 @@ Pre-built scaffolding in [`../genesis-engine/templates/`](../genesis-engine/temp
 ### Quick Support Options
 
 **🆘 Stuck on Concepts?**
-- Start with [The Enchanted Apiary](hive_preprint_part1_enchanted_apiary.md) fairy tale
+- Start with [The Enchanted Apiary](docs/hive_preprint_part1_enchanted_apiary.md) fairy tale
 - Review [Quick Reference](#quick-reference) above
 
-**🔧 Implementation Issues?**  
-- Check [Working Examples](../hive/components/)
-- Follow [30-Day Quick Start](hive_preprint_part4_growing_your_hive.md#30-day-quick-start)
-- Examine [Genesis Engine Templates](../genesis-engine/templates/)
-
 **🏢 Team Adoption Challenges?**
-- Review [Team Lead's Path](#-the-team-leads-path)  
-- Study [Colony Building Phase](hive_preprint_part4_growing_your_hive.md#phase-2-colony-building)
-- Use [Success Metrics](hive_preprint_part4_growing_your_hive.md#success-metrics-and-kpis)
+- Review [The Team Lead's Path](#-the-team-leads-path)
+- Study [Colony Building Phase](docs/hive_preprint_part4_growing_your_hive.md#phase-2-colony-building)
+- Use [Success Metrics](docs/hive_preprint_part4_growing_your_hive.md#success-metrics-and-kpis)
 
 **🧪 Advanced Architecture Questions?**
-- Explore [Chemical Architecture](hive_preprint_part3_chemical_architecture.md)
-- Try [Quantum Hive Patterns](hive_preprint_part4_growing_your_hive.md#quantum-hive-patterns)
+- Explore [Chemical Architecture](docs/hive_preprint_part3_chemical_architecture.md)
+- Try [Quantum Hive Patterns](docs/hive_preprint_part4_growing_your_hive.md#quantum-hive-patterns)
 
 ---
 
 ## 🌍 Join the Ecosystem
 
-### Contributing to the Hive
+### Contributing to the Hive Methodology
 
-The Hive Architecture is a living system that grows through community collaboration:
+The Hive Architecture is a living methodology that grows through community collaboration:
 
-- **🐛 Found a bug or improvement?** Check our [contributing guidelines](../CONTRIBUTING.md)
-- **💡 Have a pattern idea?** Share it through issues or PRs
-- **🏢 Implemented in your org?** We'd love to hear your story!
-- **📚 Want to improve docs?** Documentation contributions are always welcome
+- **💡 Have a pattern idea?** Share it through GitHub issues or discussions.
+- **🏢 Implemented concepts in your org?** We'd love to hear your story!
+- **📚 Want to improve docs?** Documentation contributions are always welcome.
 
 ### Connect with Fellow Beekeepers
 
-- **GitHub Discussions**: Share experiences and get help
-- **Code Examples**: Contribute to our [living examples](../hive/components/)
-- **Pattern Library**: Help expand our Sacred Codon collection
-- **Case Studies**: Document your Hive transformation journey
+- **GitHub Discussions**: Share experiences and get help with the concepts.
+- **Case Studies**: Document your Hive transformation journey and share it with the community.
 
 ---
 
@@ -372,14 +304,7 @@ As you master the Hive Architecture, you'll naturally progress through these sta
 
 ### 📚 Table of Contents
 
-1. **[Part I: The Enchanted Apiary](hive_preprint_part1_enchanted_apiary.md)** - Core philosophy and fairy tale foundation
-2. **[Part II: The Beekeeper's Grimoire](hive_preprint_part2_beekeeper_grimoire.md)** - Technical implementation with Sacred Codons
-3. **[Part III: The Chemical Architecture](hive_preprint_part3_chemical_architecture.md)** - Advanced patterns using chemical analogies  
-4. **[Part IV: Growing Your Hive](hive_preprint_part4_growing_your_hive.md)** - Practical scaling and implementation roadmap
-
-### 🔗 Related Project Files
-
-- **[Royal Jelly SDK](../dna_core/royal_jelly/)** - Core framework implementation
-- **[Genesis Engine](../genesis-engine/)** - Code generation and scaffolding tools
-- **[Working Examples](../hive/components/)** - Live Hive components
-- **[Pollen Protocol](../dna_core/pollen_protocol.proto)** - Inter-hive communication standard
+1. **[Part I: The Enchanted Apiary](docs/hive_preprint_part1_enchanted_apiary.md)** - Core philosophy and fairy tale foundation
+2. **[Part II: The Beekeeper's Grimoire](docs/hive_preprint_part2_beekeeper_grimoire.md)** - Technical implementation with Sacred Codons
+3. **[Part III: The Chemical Architecture](docs/hive_preprint_part3_chemical_architecture.md)** - Advanced patterns using chemical analogies
+4. **[Part IV: Growing Your Hive](docs/hive_preprint_part4_growing_your_hive.md)** - Practical scaling and implementation roadmap

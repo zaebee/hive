@@ -1,0 +1,14 @@
+# This is a generated transformation: {{ transformation_name }}Transformation
+
+class {{ transformation_name }}Transformation:
+    """
+    A stateless transformation that processes data.
+    """
+    def execute(self, data: dict) -> dict:
+        """
+        Executes the transformation. This should be a pure function.
+        """
+        print(f"Executing transformation on: {data}")
+        # TODO: Implement the transformation logic here
+        transformed_data = {f"transformed_{k}": v for k, v in data.items()}
+        return transformed_data
