@@ -1,0 +1,19 @@
+# This is a generated {{ connector_type }} connector: {{ connector_name }}Connector
+
+class {{ connector_name }}Connector:
+    """
+    Connects to the outside world using {{ protocol }}.
+    This connector is of type '{{ connector_type }}'.
+    """
+    def __init__(self):
+        self.protocol = "{{ protocol }}"
+
+    def connect(self):
+        print(f"Initializing {{ connector_type }} connection using {{ protocol }}...")
+
+    def send(self, data: dict):
+        print(f"Sending data via {{ protocol }}: {data}")
+
+    def receive(self):
+        print(f"Receiving data via {{ protocol }}")
+        return {"data": "sample_data"}

@@ -1185,32 +1185,32 @@ The Hive Architecture is more than a set of technical patterns—it's a living p
 
 ### Appendix A: Genesis Engine CLI Reference
 
-[Detailed CLI command reference - 50+ commands with examples]
+[Detailed CLI command reference](../04_appendices/appendix_a_genesis_engine_cli_reference.md)
 
 ### Appendix B: Sacred Codon Pattern Library  
 
-[Complete pattern catalog with code templates]
+[Complete pattern catalog with code templates](../04_appendices/appendix_b_sacred_codon_pattern_library.md)
 
 ### Appendix C: Chemical Bond Analysis Tools
 
-[Tools and techniques for chemical architecture analysis]
+[Tools and techniques for chemical architecture analysis](../04_appendices/appendix_c_chemical_bond_analysis_tools.md)
 
 ### Appendix D: Case Study Collection
 
-[10 detailed case studies from real implementations]
+[10 detailed case studies from real implementations](../04_appendices/appendix_d_case_study_collection.md)
 
 ### Appendix E: Troubleshooting Guide
 
-[Common issues and solutions with step-by-step fixes]
+[Common issues and solutions with step-by-step fixes](../04_appendices/appendix_e_troubleshooting_guide.md)
 
 ### Appendix F: Integration Guides
 
-[How to integrate with popular frameworks and platforms]
+[How to integrate with popular frameworks and platforms](../04_appendices/appendix_f_integration_guides.md)
 
 ### Appendix G: Metrics and Monitoring
 
-[Complete guide to observing and optimizing Hive systems]
+[Complete guide to observing and optimizing Hive systems](../04_appendices/appendix_g_metrics_and_monitoring.md)
 
 ### Appendix H: Team Training Materials
 
-[Workshop templates, exercises, and certification programs]
+[Workshop templates, exercises, and certification programs](../04_appendices/appendix_h_team_training_materials.md)

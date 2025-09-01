@@ -1,0 +1,57 @@
+# This is a generated aggregate: {{ aggregate_name }}Aggregate
+
+from typing import List, Dict, Any
+import uuid
+from datetime import datetime
+
+class {{ aggregate_name }}Aggregate:
+    """
+    Represents the {{ aggregate_name }} aggregate.
+    It encapsulates the state and business logic.
+    """
+    def __init__(self, aggregate_id: str = None):
+        self.id = aggregate_id or str(uuid.uuid4())
+        self.status = "initialized"
+        # Add other state properties here
+
+    def execute_command(self, command_type: str, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """
+        Executes a command and returns a list of generated events.
+        This is the C->A->G pattern.
+        """
+        if command_type not in self.get_supported_commands():
+            raise ValueError(f"Unsupported command: {command_type}")
+
+        handler = getattr(self, f"_handle_{command_type.lower()}")
+        return handler(payload)
+
+    def get_supported_commands(self) -> List[str]:
+        return [
+            {% for command in commands -%}
+            "{{ command }}",
+            {% endfor -%}
+        ]
+
+    # --- Command Handlers ---
+    {% for command in commands %}
+    def _handle_{{ command.lower() }}(self, payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+        # TODO: Implement validation for {{ command }}
+        print(f"Handling {{ command }} with payload: {payload}")
+
+        # TODO: Implement state changes for {{ command }}
+
+        # Generate event(s)
+        event_payload = {"aggregate_id": self.id, "timestamp": datetime.utcnow().isoformat()}
+        # TODO: Populate event payload for {{ command }}
+
+        return [self._create_event("{{ events[loop.index0] if events else command + 'Handled' }}", event_payload)]
+    {% endfor %}
+
+    def _create_event(self, event_type: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Creates a new event dictionary.
+        """
+        return {
+            "event_type": event_type,
+            "payload": payload,
+        }

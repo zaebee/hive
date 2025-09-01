@@ -694,7 +694,7 @@ Key takeaways from this technical implementation:
 4. **Pollen Protocol** ensures consistent event communication
 5. **Genesis Engine** provides practical tooling for development
 
-The next part of our journey explores **The Chemical Architecture**—advanced patterns that treat software components as chemical elements with predictable bonding rules and reaction patterns.
+The next part of our journey explores [The Chemical Architecture](../03_patterns/hive_preprint_part3_chemical_architecture.md)—advanced patterns that treat software components as chemical elements with predictable bonding rules and reaction patterns.
 
 ---
 

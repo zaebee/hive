@@ -984,7 +984,7 @@ Key benefits of this approach:
 4. **Validation**: Enforce conservation laws and bonding rules
 5. **Optimization**: Use catalysts to improve performance
 
-The next part explores **Growing Your Hive** - practical implementation guides, case studies, and roadmaps for adopting these patterns in real-world systems.
+The next part explores [Growing Your Hive](../04_growth_and_scaling/hive_preprint_part4_growing_your_hive.md) - practical implementation guides, case studies, and roadmaps for adopting these patterns in real-world systems.
 
 ---
 

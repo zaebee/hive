@@ -1,0 +1,14 @@
+[project]
+name = "genesis-engine"
+version = "0.1.0"
+description = "A CLI for the Hive Architecture"
+authors = [{ name = "Jules", email = "jules@example.com" }]
+dependencies = [
+    "typer[all]",
+    "jinja2",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest",
+]

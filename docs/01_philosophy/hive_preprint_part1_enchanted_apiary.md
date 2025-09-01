@@ -323,7 +323,7 @@ The Enchanted Apiary provides more than just architectural guidance—it offers 
 
 The four ATCG primitives provide the genetic foundation, the Quaternary and Duality principles ensure structural integrity, and the Royal Jelly framework makes it all practical and implementable. Together, they create a comprehensive approach to building distributed systems that can grow, adapt, and thrive.
 
-In the next part of our journey, we'll explore **The Beekeeper's Grimoire**—the technical implementation details that turn this beautiful metaphor into working code.
+In the next part of our journey, we'll explore [The Beekeeper's Grimoire](../02_atcg_genome/hive_preprint_part2_beekeeper_grimoire.md)—the technical implementation details that turn this beautiful metaphor into working code.
 
 ---
 
